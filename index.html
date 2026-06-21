@@ -194,6 +194,17 @@
   /* reveal */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity 1s ease, transform 1s ease;}
   .reveal.show{opacity:1;transform:none;}
+
+  /* 배경음악 버튼 */
+  .music-btn{position:fixed;top:16px;right:16px;z-index:60;width:42px;height:42px;border-radius:50%;
+    background:rgba(255,255,255,.26);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
+    border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 16px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.6);
+    display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;}
+  .music-btn .ico{font-size:17px;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,.35);display:inline-block;}
+  .music-btn.playing .ico{animation:spin 3.4s linear infinite;}
+  .music-btn:not(.playing){animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.6);}50%{box-shadow:0 4px 22px rgba(255,255,255,.55), inset 0 1px 0 rgba(255,255,255,.6);}}
 </style>
 </head>
 <body>
@@ -201,6 +212,10 @@
   <div class="bg"><img src="images/main.jpg" alt="" /></div>
   <div class="orb a"></div>
   <div class="orb b"></div>
+
+  <!-- 배경음악 -->
+  <audio id="bgm" loop preload="auto" src="images/bgm.m4a"></audio>
+  <div class="music-btn" id="musicBtn" aria-label="배경음악"><span class="ico">♪</span></div>
 
   <!-- ============ COVER (풀스크린) ============ -->
   <header class="cover">
@@ -216,12 +231,6 @@
   </header>
 
 <div class="wrap"><div class="content">
-
-  <!-- 인사 위 한국어 이름 -->
-  <div class="cover-kr reveal show">
-    <div class="kn">변영준 &nbsp; 김민선</div>
-    <div class="ks">우리, 결혼합니다</div>
-  </div>
 
   <!-- ============ GREETING ============ -->
   <section class="glass greeting reveal">
@@ -276,7 +285,6 @@
       <div class="cd-box"><div class="cd-num" id="cd-d">--</div><div class="cd-lab">Days</div></div>
       <div class="cd-box"><div class="cd-num" id="cd-h">--</div><div class="cd-lab">Hour</div></div>
       <div class="cd-box"><div class="cd-num" id="cd-m">--</div><div class="cd-lab">Min</div></div>
-      <div class="cd-box"><div class="cd-num" id="cd-s">--</div><div class="cd-lab">Sec</div></div>
     </div>
     <div class="cd-msg">영준 &amp; 민선의 결혼식이 <b id="cd-text">D-—</b> 남았습니다.</div>
   </section>
@@ -338,7 +346,6 @@
 
   <!-- ============ OUTRO ============ -->
   <section class="glass outro reveal">
-    <div class="mono cor">Y<span class="amp">&amp;</span>M</div>
     <div class="thanks">Thank you</div>
     <p class="kr">소중한 분들을 모시고<br/>새로운 시작을 함께하고 싶습니다.</p>
   </section>
@@ -356,10 +363,22 @@
     document.getElementById('cd-d').textContent = Math.floor(gap/86400000);
     document.getElementById('cd-h').textContent = String(Math.floor(gap%86400000/3600000)).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(Math.floor(gap%3600000/60000)).padStart(2,'0');
-    document.getElementById('cd-s').textContent = String(Math.floor(gap%60000/1000)).padStart(2,'0');
     document.getElementById('cd-text').textContent = 'D-' + Math.floor(gap/86400000);
   }
   tick(); setInterval(tick, 1000);
+
+  /* 배경음악: 버튼 토글 + 첫 인터랙션 시 자동재생 */
+  (function(){
+    var bgm=document.getElementById('bgm'), mb=document.getElementById('musicBtn');
+    function paint(p){ mb.classList.toggle('playing',p); mb.querySelector('.ico').textContent = p?'♫':'♪'; }
+    mb.addEventListener('click', function(e){ e.stopPropagation(); if(bgm.paused){bgm.play();}else{bgm.pause();} });
+    bgm.addEventListener('play', function(){ paint(true); });
+    bgm.addEventListener('pause', function(){ paint(false); });
+    bgm.play().catch(function(){
+      var once=function(){ bgm.play().catch(function(){}); ['touchstart','click','scroll'].forEach(function(ev){window.removeEventListener(ev,once);}); };
+      ['touchstart','click','scroll'].forEach(function(ev){ window.addEventListener(ev,once,{once:true}); });
+    });
+  })();
 
   /* 계좌 복사 */
   document.querySelectorAll('.copy-btn').forEach(function(b){
