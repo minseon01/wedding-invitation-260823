@@ -38,15 +38,13 @@
     min-height:100vh;
   }
   /* ===== 고정 배경: 컬러 사진 블러 + 그라데이션 메쉬 ===== */
-  .bg{position:fixed;top:0;left:0;width:100%;height:100vh;height:100lvh;z-index:-3;overflow:hidden;}
-  .bg img{position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;filter:blur(34px) saturate(1.25) brightness(1.04);}
-  .bg::after{content:"";position:absolute;inset:0;
+  .bg{position:fixed;top:0;left:0;width:100%;height:100vh;height:100lvh;z-index:-3;overflow:hidden;
     background:
-      radial-gradient(60% 45% at 20% 12%, rgba(214,232,210,.55), transparent 60%),
-      radial-gradient(55% 40% at 88% 22%, rgba(247,236,224,.55), transparent 60%),
-      radial-gradient(70% 50% at 78% 88%, rgba(202,221,238,.5), transparent 60%),
-      radial-gradient(60% 45% at 10% 80%, rgba(232,224,238,.45), transparent 60%),
-      linear-gradient(180deg, rgba(245,247,243,.35), rgba(225,232,235,.45));}
+      radial-gradient(62% 46% at 18% 10%, rgba(210,230,206,.75), transparent 62%),
+      radial-gradient(56% 42% at 90% 20%, rgba(248,236,222,.75), transparent 62%),
+      radial-gradient(72% 52% at 80% 90%, rgba(198,219,238,.7), transparent 62%),
+      radial-gradient(62% 46% at 8% 82%, rgba(232,222,240,.62), transparent 62%),
+      linear-gradient(180deg,#eef1eb,#e4e9ea);}
   /* 떠다니는 빛망울 */
   .orb{position:fixed;border-radius:50%;filter:blur(8px);z-index:-2;opacity:.6;mix-blend-mode:screen;}
   .orb.a{width:200px;height:200px;top:8%;right:-50px;background:radial-gradient(circle,#fff7e8,transparent 70%);}
@@ -140,9 +138,16 @@
 
   /* ===== GALLERY ===== */
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
-  .grid .ph{aspect-ratio:3/4;border-radius:14px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);
-    display:flex;align-items:center;justify-content:center;color:rgba(40,50,70,.5);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;}
-  .grid .ph.wide{grid-column:span 2;aspect-ratio:16/11;}
+  .grid img.ph{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;display:block;cursor:pointer;
+    border:1px solid rgba(255,255,255,.5);box-shadow:0 4px 14px rgba(20,30,55,.12);transition:transform .25s ease;}
+  .grid img.ph:active{transform:scale(.98);}
+  .grid img.ph.wide{grid-column:span 2;}
+  /* 라이트박스 */
+  .lightbox{position:fixed;inset:0;z-index:130;background:rgba(12,16,28,.92);
+    display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease;padding:20px;}
+  .lightbox.show{opacity:1;pointer-events:auto;}
+  .lightbox img{max-width:100%;max-height:88vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+  .lightbox .lb-close{position:absolute;top:18px;right:22px;color:#fff;font-size:30px;font-family:'Cormorant Garamond',serif;cursor:pointer;line-height:1;opacity:.85;}
 
   /* ===== LOCATION ===== */
   .location .hall{font-size:18px;font-weight:700;letter-spacing:2px;}
@@ -226,15 +231,43 @@
     background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 18px rgba(0,0,0,.2);animation:breathe 1.9s ease-in-out infinite;}
   @keyframes breathe{0%,100%{transform:scale(1);opacity:.92;}50%{transform:scale(1.05);opacity:1;}}
+
+  /* ===== 폰트 전체 키우기 ===== */
+  .greeting .poem{font-size:17px;line-height:2.6;}
+  .family .child{font-size:21px;}
+  .family .parents{font-size:14px;}
+  .family .rel{font-size:14px;}
+  .datesec .time{font-size:15px;}
+  .datesec .dow{font-size:18px;}
+  .location .hall{font-size:21px;}
+  .location .floor{font-size:15px;}
+  .location .addr{font-size:14px;}
+  .ct-name{font-size:17px;}
+  .ct-role{font-size:13px;}
+  .account .lead{font-size:15px;}
+  .acc-num{font-size:15px;}
+  .acc-role{font-size:13px;}
+  .acc-name{font-size:12.5px;}
+  .label{font-size:14px;}
+  .ix{font-size:14px;}
+  .eyebrow{font-size:12px;}
+  .outro .thanks{font-size:21px;}
+  .outro .kr{font-size:15px;}
+  .cd-msg{font-size:14px;}
+  .cd-num{font-size:30px;}
+  .cd-lab{font-size:11px;}
+  .copy-btn{font-size:12px;}
+  .map-btn{font-size:13px;}
 </style>
 </head>
 <body>
-  <!-- 고정 배경 -->
-  <div class="bg"><img src="images/main.jpg" alt="" /></div>
+  <!-- 고정 배경 (그라데이션) -->
+  <div class="bg"></div>
   <div class="orb a"></div>
   <div class="orb b"></div>
 
   <div class="toast" id="toast"></div>
+  <div class="lightbox" id="lightbox"><span class="lb-close">&times;</span><img id="lbImg" src="" alt=""/></div>
 
   <!-- 배경음악 -->
   <audio id="bgm" loop preload="auto" src="images/bgm.m4a"></audio>
@@ -324,13 +357,20 @@
   <section class="glass gallery reveal">
     <div class="head"><span class="ix">iii.</span><span class="label">Gallery</span></div>
     <div class="grid">
-      <div class="ph wide">image</div>
-      <div class="ph">image</div>
-      <div class="ph">image</div>
-      <div class="ph">image</div>
-      <div class="ph">image</div>
+      <img class="ph wide" src="images/gallery/g1.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g2.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g3.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g4.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g5.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g6.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g7.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g8.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g9.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g10.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g11.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g12.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph wide" src="images/gallery/g13.jpg" loading="lazy" alt="갤러리"/>
     </div>
-    <div class="note">📷 갤러리에 넣을 사진 더 주시면 채워드릴게요.</div>
   </section>
 
   <!-- ============ LOCATION ============ -->
@@ -445,6 +485,15 @@
     });
   });
 
+
+  /* 갤러리 라이트박스 */
+  (function(){
+    var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
+    document.querySelectorAll('.grid img.ph').forEach(function(im){
+      im.addEventListener('click', function(){ lbImg.src=im.src; lb.classList.add('show'); });
+    });
+    lb.addEventListener('click', function(){ lb.classList.remove('show'); setTimeout(function(){lbImg.src='';},300); });
+  })();
 
   /* 스크롤 등장 */
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('show');});},{threshold:.12});
