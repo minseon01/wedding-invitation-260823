@@ -165,6 +165,13 @@
   .ct-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);
     display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
   .ct-btn:active{background:rgba(255,255,255,.55);}
+  .ct-btn.kakao{background:rgba(254,229,0,.85);border-color:rgba(254,229,0,.9);color:#3a1d1d;font-size:13px;font-weight:700;}
+  .ct-btn.kakao:active{background:#fee500;}
+  /* 토스트 */
+  .toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);z-index:120;
+    background:rgba(20,26,42,.92);color:#fff;font-size:13px;letter-spacing:.5px;padding:12px 20px;border-radius:30px;
+    box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s ease, transform .3s ease;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   /* ===== ACCOUNT (dark glass) ===== */
   .account .lead{font-size:13px;opacity:.8;line-height:2.1;margin-bottom:24px;}
@@ -226,6 +233,8 @@
   <div class="orb a"></div>
   <div class="orb b"></div>
 
+  <div class="toast" id="toast"></div>
+
   <!-- 배경음악 -->
   <audio id="bgm" loop preload="auto" src="images/bgm.m4a"></audio>
   <div class="music-btn" id="musicBtn" aria-label="배경음악"><span class="ico">♪</span></div>
@@ -255,7 +264,7 @@
   <section class="glass greeting reveal">
     <div class="quote cor">“</div>
     <p class="poem">
-      <span class="em">마이리얼트립 커뮤니티팀에서<br/>팀장과 인턴으로 만나</span><br/>
+      <span class="em">마이리얼트립에서<br/>팀장과 인턴으로 만나</span><br/>
       어느새 사업 파트너이자<br/>
       인생의 동반자가 되었습니다.<br/><br/>
       서로 다른 두 사람이<br/>
@@ -341,13 +350,20 @@
     <div class="head"><span class="ix">v.</span><span class="label">Contact</span></div>
     <div class="ct-row">
       <div class="ct-who"><div class="ct-role">Groom</div><div class="ct-name">변영준</div></div>
-      <div class="ct-acts"><a class="ct-btn" href="tel:01000000000">✆</a><a class="ct-btn" href="sms:01000000000">✉</a></div>
+      <div class="ct-acts">
+        <a class="ct-btn" href="tel:010-8077-0107">✆</a>
+        <a class="ct-btn" href="sms:010-8077-0107">✉</a>
+        <button class="ct-btn kakao" data-kakao="eudiny2014">톡</button>
+      </div>
     </div>
     <div class="ct-row">
       <div class="ct-who"><div class="ct-role">Bride</div><div class="ct-name">김민선</div></div>
-      <div class="ct-acts"><a class="ct-btn" href="tel:01000000000">✆</a><a class="ct-btn" href="sms:01000000000">✉</a></div>
+      <div class="ct-acts">
+        <a class="ct-btn" href="tel:010-8776-2382">✆</a>
+        <a class="ct-btn" href="sms:010-8776-2382">✉</a>
+        <button class="ct-btn kakao" data-kakao="minseonk01">톡</button>
+      </div>
     </div>
-    <div class="note">📱 연락처 주시면 전화·문자 버튼에 연결할게요.</div>
   </section>
 
   <!-- ============ ACCOUNT ============ -->
@@ -404,12 +420,28 @@
     intro.addEventListener('touchstart', enter, {passive:true});
   })();
 
+  /* 토스트 */
+  var _tt;
+  function toast(msg){
+    var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+    clearTimeout(_tt); _tt=setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+
   /* 계좌 복사 */
   document.querySelectorAll('.copy-btn').forEach(function(b){
     b.addEventListener('click', function(){
       navigator.clipboard.writeText(b.getAttribute('data-acc')).then(function(){
         var o=b.textContent; b.textContent='Copied'; setTimeout(function(){b.textContent=o;},1200);
+        toast('계좌번호가 복사되었어요');
       });
+    });
+  });
+
+  /* 카카오톡 ID 복사 */
+  document.querySelectorAll('.ct-btn.kakao').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id=b.getAttribute('data-kakao');
+      navigator.clipboard.writeText(id).then(function(){ toast('카카오톡 ID 복사됨 · '+id); });
     });
   });
 
