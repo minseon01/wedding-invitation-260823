@@ -137,17 +137,23 @@
   .cd-msg b{font-weight:400;}
 
   /* ===== GALLERY ===== */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
-  .grid img.ph{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;display:block;cursor:pointer;
+  .grid{display:flex;gap:10px;margin-top:4px;overflow-x:auto;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 24px 10px 2px;}
+  .grid::-webkit-scrollbar{display:none;}
+  .grid img.ph{flex:0 0 70%;scroll-snap-align:start;aspect-ratio:3/4;object-fit:cover;border-radius:12px;display:block;cursor:pointer;
     border:1px solid rgba(255,255,255,.5);box-shadow:0 4px 14px rgba(20,30,55,.12);transition:transform .25s ease;}
   .grid img.ph:active{transform:scale(.98);}
-  .grid img.ph.wide{grid-column:span 2;}
   /* 라이트박스 */
   .lightbox{position:fixed;inset:0;z-index:130;background:rgba(12,16,28,.92);
-    display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease;padding:20px;}
+    opacity:0;pointer-events:none;transition:opacity .3s ease;padding:20px;overflow:hidden;}
   .lightbox.show{opacity:1;pointer-events:auto;}
-  .lightbox img{max-width:100%;max-height:88vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
-  .lightbox .lb-close{position:absolute;top:18px;right:22px;color:#fff;font-size:30px;font-family:'Cormorant Garamond',serif;cursor:pointer;line-height:1;opacity:.85;}
+  .lightbox .lb-track{display:flex;width:100%;height:100%;transition:transform .35s ease;}
+  .lightbox .lb-track.dragging{transition:none;}
+  .lightbox .lb-track img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+  .lightbox .lb-close{position:absolute;top:18px;right:22px;color:#fff;font-size:30px;font-family:'Cormorant Garamond',serif;cursor:pointer;line-height:1;opacity:.85;z-index:1;}
+  .lightbox .lb-dots{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:6px;}
+  .lightbox .lb-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);}
+  .lightbox .lb-dots span.on{background:#fff;}
 
   /* ===== LOCATION ===== */
   .location .hall{font-size:18px;font-weight:700;letter-spacing:2px;}
@@ -279,7 +285,25 @@
   <div class="orb b"></div>
 
   <div class="toast" id="toast"></div>
-  <div class="lightbox" id="lightbox"><span class="lb-close">&times;</span><img id="lbImg" src="" alt=""/></div>
+  <div class="lightbox" id="lightbox">
+    <span class="lb-close">&times;</span>
+    <div class="lb-track" id="lbTrack">
+      <img src="images/gallery/g1.jpg" alt="갤러리"/>
+      <img src="images/gallery/g2.jpg" alt="갤러리"/>
+      <img src="images/gallery/g3.jpg" alt="갤러리"/>
+      <img src="images/gallery/g4.jpg" alt="갤러리"/>
+      <img src="images/gallery/g5.jpg" alt="갤러리"/>
+      <img src="images/gallery/g7.jpg" alt="갤러리"/>
+      <img src="images/gallery/g8.jpg" alt="갤러리"/>
+      <img src="images/gallery/g9.jpg" alt="갤러리"/>
+      <img src="images/gallery/g10.jpg" alt="갤러리"/>
+      <img src="images/gallery/g11.jpg" alt="갤러리"/>
+      <img src="images/gallery/g12.jpg" alt="갤러리"/>
+      <img src="images/gallery/g13.jpg" alt="갤러리"/>
+      <img src="images/gallery/g14.jpg" alt="갤러리"/>
+    </div>
+    <div class="lb-dots" id="lbDots"></div>
+  </div>
 
   <!-- 배경음악 -->
   <audio id="bgm" loop preload="auto" src="images/bgm.m4a"></audio>
@@ -310,7 +334,7 @@
   <section class="glass greeting reveal">
     <div class="quote cor">“</div>
     <p class="poem">
-      <span class="em">회사에서<br/>팀장과 인턴으로 만나</span><br/>
+      <span class="em">팀장과 인턴으로 만나</span><br/>
       어느새 사업 파트너이자<br/>
       인생의 파트너가 되었습니다.<br/><br/>
       서로 다른 두 사람이<br/>
@@ -368,14 +392,19 @@
   <section class="glass gallery reveal">
     <div class="head"><span class="ix">iii.</span><span class="label">Gallery</span></div>
     <div class="grid">
-      <img class="ph wide" src="images/gallery/g1.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g1.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g2.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g3.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g4.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g5.jpg" loading="lazy" alt="갤러리"/>
-      <img class="ph" src="images/gallery/g6.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g7.jpg" loading="lazy" alt="갤러리"/>
-      <img class="ph wide" src="images/gallery/g8.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g8.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g9.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g10.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g11.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g12.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g13.jpg" loading="lazy" alt="갤러리"/>
+      <img class="ph" src="images/gallery/g14.jpg" loading="lazy" alt="갤러리"/>
     </div>
   </section>
 
@@ -493,13 +522,57 @@
   });
 
 
-  /* 갤러리 라이트박스 */
+  /* 갤러리 라이트박스 (스와이프 슬라이드) */
   (function(){
-    var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
-    document.querySelectorAll('.grid img.ph').forEach(function(im){
-      im.addEventListener('click', function(){ lbImg.src=im.src; lb.classList.add('show'); });
+    var lb=document.getElementById('lightbox'), track=document.getElementById('lbTrack');
+    var thumbs=Array.prototype.slice.call(document.querySelectorAll('.grid img.ph'));
+    var dotsWrap=document.getElementById('lbDots');
+    var count=track.children.length, idx=0, w=0;
+    dotsWrap.innerHTML=Array.from({length:count}).map(function(){return '<span></span>';}).join('');
+    var dots=dotsWrap.children;
+    function paintDots(){ for(var i=0;i<dots.length;i++){ dots[i].classList.toggle('on', i===idx); } }
+    function goTo(i, animate){
+      idx=Math.max(0, Math.min(count-1, i));
+      w=lb.clientWidth;
+      track.classList.toggle('dragging', animate===false);
+      track.style.transform='translateX(' + (-idx*w) + 'px)';
+      paintDots();
+    }
+    thumbs.forEach(function(im,i){
+      im.addEventListener('click', function(){ lb.classList.add('show'); goTo(i,true); });
     });
-    lb.addEventListener('click', function(){ lb.classList.remove('show'); setTimeout(function(){lbImg.src='';},300); });
+    lb.querySelector('.lb-close').addEventListener('click', function(e){ e.stopPropagation(); close(); });
+    function close(){ lb.classList.remove('show'); }
+
+    var startX=0, startY=0, dragging=false, moved=false, lastTouchEnd=0;
+    track.addEventListener('touchstart', function(e){
+      startX=e.touches[0].clientX; startY=e.touches[0].clientY; dragging=true; moved=false; w=lb.clientWidth;
+    }, {passive:true});
+    track.addEventListener('touchmove', function(e){
+      if(!dragging) return;
+      var dx=e.touches[0].clientX-startX, dy=e.touches[0].clientY-startY;
+      if(Math.abs(dx)>Math.abs(dy)){
+        moved=true;
+        track.classList.add('dragging');
+        track.style.transform='translateX(' + (-idx*w+dx) + 'px)';
+      }
+    }, {passive:true});
+    track.addEventListener('touchend', function(e){
+      dragging=false;
+      track.classList.remove('dragging');
+      lastTouchEnd=Date.now();
+      var dx=e.changedTouches[0].clientX-startX;
+      if(!moved){ close(); return; }
+      if(Math.abs(dx)>50){ goTo(idx+(dx<0?1:-1), true); }
+      else{ goTo(idx, true); }
+    });
+    /* 데스크톱(마우스)에서 탭하면 닫기 - 터치 직후 발생하는 합성 클릭은 무시 */
+    track.addEventListener('click', function(){
+      if(Date.now()-lastTouchEnd<500) return;
+      close();
+    });
+    window.addEventListener('resize', function(){ if(lb.classList.contains('show')) goTo(idx,false); });
+    lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
   })();
 
   /* 스크롤 등장 */
