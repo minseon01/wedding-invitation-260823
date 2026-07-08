@@ -96,9 +96,10 @@
   html.dark .glass{box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.14);}
   html.dark .cover-kr .kn{text-shadow:0 1px 12px rgba(0,0,0,.6);}
 
-  /* 두 번째 테마 버튼(레드 모드) 위치 */
-  .theme-btn.theme-btn2{left:66px;}
-  html.red .theme-btn2{background:rgba(255,255,255,.55);border-color:rgba(214,44,66,.5);}
+  /* 다크 모드 커버: 합쳐진 원본 전체가 보이도록 축소 (과확대·잘림 방지) */
+  html.dark .cover .photo-frame img{object-fit:contain;object-position:center;background:#0c0f16;
+    padding:26px 30px 84px;box-sizing:border-box;}
+  html.dark .cover .photo-frame::after{display:none;}
 
   /* ===== 레드 모드 (화이트 배경 + 레드 포인트) ===== */
   html.red{ --ink:#3a2a2e; --ink-soft:#8a5f68; --glass:rgba(255,255,255,.5); --glass-line:rgba(255,255,255,.85);
@@ -358,8 +359,7 @@
   <!-- 배경음악 -->
   <audio id="bgm" loop preload="auto" src="images/bgm.m4a"></audio>
   <div class="music-btn" id="musicBtn" aria-label="배경음악"><span class="ico">♪</span></div>
-  <div class="theme-btn" id="themeBtn" role="button" aria-label="다크 모드 전환">🌙</div>
-  <div class="theme-btn theme-btn2" id="redBtn" role="button" aria-label="레드 모드 전환">🤍</div>
+  <div class="theme-btn" id="themeBtn" role="button" aria-label="테마 전환 (해·달·하트)">☀️</div>
 
   <!-- 인트로 입장 화면 -->
   <div class="intro" id="intro">
@@ -637,25 +637,26 @@
     lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
   })();
 
-  /* 테마 모드: light / dark(커버=스파클러 야경) / red(화이트+레드, 커버=갤러리 첫사진 g1) */
+  /* 테마: 버튼 하나로 라이트(해)→다크(달)→레드(하트) 순환 · 커버 사진도 모드별 교체 */
   (function(){
-    var root=document.documentElement;
-    var darkBtn=document.getElementById('themeBtn'), redBtn=document.getElementById('redBtn');
+    var root=document.documentElement, btn=document.getElementById('themeBtn');
     var cover=document.querySelector('.cover .photo-frame img');
-    var IMG={light:'images/main1.jpg', dark:'images/main_dark.jpg', red:'images/gallery/g1.jpg'};
+    var IMG ={light:'images/main1.jpg', dark:'images/main_dark.jpg', red:'images/gallery/g1.jpg'};
+    var ICON={light:'☀️', dark:'🌙', red:'❤️'};
+    var ORDER=['light','dark','red'];
     function setMode(mode){
-      if(mode!=='dark'&&mode!=='red') mode='light';
+      if(ORDER.indexOf(mode)<0) mode='light';
       root.classList.toggle('dark', mode==='dark');
       root.classList.toggle('red', mode==='red');
       if(cover){ cover.src = IMG[mode]; }
-      darkBtn.textContent = mode==='dark' ? '☀️' : '🌙';
-      redBtn.textContent  = mode==='red'  ? '❤️' : '🤍';
-      try{ localStorage.setItem('theme', mode); }catch(e){}
+      btn.textContent = ICON[mode];
     }
-    var saved='light'; try{ saved=localStorage.getItem('theme')||'light'; }catch(e){}
-    setMode(saved);
-    darkBtn.addEventListener('click', function(e){ e.stopPropagation(); setMode(root.classList.contains('dark')?'light':'dark'); });
-    redBtn.addEventListener('click', function(e){ e.stopPropagation(); setMode(root.classList.contains('red')?'light':'red'); });
+    /* 페이지를 열 때마다 라이트/다크/레드 중 랜덤으로 시작 */
+    setMode(ORDER[Math.floor(Math.random()*ORDER.length)]);
+    btn.addEventListener('click', function(e){ e.stopPropagation();
+      var cur = root.classList.contains('dark') ? 'dark' : root.classList.contains('red') ? 'red' : 'light';
+      setMode(ORDER[(ORDER.indexOf(cur)+1)%ORDER.length]);
+    });
   })();
 
   /* 스크롤 등장 */
