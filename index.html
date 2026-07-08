@@ -96,14 +96,24 @@
   html.dark .glass{box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.14);}
   html.dark .cover-kr .kn{text-shadow:0 1px 12px rgba(0,0,0,.6);}
 
-  /* ===== 하트 포토 (갤러리 첫 사진 g1 · 레드 포인트) ===== */
-  .heart-wrap{--heart:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29.6'%3E%3Cpath d='M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z'/%3E%3C/svg%3E");
-    display:flex;justify-content:center;margin:-6px 0 26px;}
-  .heart-frame{position:relative;width:190px;height:176px;filter:drop-shadow(0 7px 16px rgba(214,44,66,.45));}
-  .heart-frame::before{content:"";position:absolute;inset:-6px;background:linear-gradient(140deg,#ff7186,#d62c42 72%);
-    -webkit-mask:var(--heart) center/contain no-repeat;mask:var(--heart) center/contain no-repeat;}
-  .heart-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 32%;
-    -webkit-mask:var(--heart) center/contain no-repeat;mask:var(--heart) center/contain no-repeat;}
+  /* 두 번째 테마 버튼(레드 모드) 위치 */
+  .theme-btn.theme-btn2{left:66px;}
+  html.red .theme-btn2{background:rgba(255,255,255,.55);border-color:rgba(214,44,66,.5);}
+
+  /* ===== 레드 모드 (화이트 배경 + 레드 포인트) ===== */
+  html.red{ --ink:#3a2a2e; --ink-soft:#8a5f68; --glass:rgba(255,255,255,.5); --glass-line:rgba(255,255,255,.85);
+    --shadow:0 8px 32px rgba(180,40,60,.16); }
+  html.red .bg{background:
+      radial-gradient(60% 45% at 20% 12%, rgba(255,210,218,.72), transparent 62%),
+      radial-gradient(55% 42% at 88% 20%, rgba(255,222,212,.66), transparent 62%),
+      radial-gradient(70% 50% at 82% 88%, rgba(255,200,212,.62), transparent 62%),
+      radial-gradient(60% 46% at 8% 84%, rgba(255,214,224,.6), transparent 62%),
+      linear-gradient(180deg,#ffffff,#fff2f4);}
+  html.red .label, html.red .ix{color:#d62c42;opacity:1;}
+  html.red .em{color:#d62c42;}
+  html.red .hairline{background:#d62c42;opacity:.55;}
+  html.red .cover-kr .kn .amp{color:#e0324a;}
+  html.red .scrolldown, html.red .quote{color:#d62c42;}
 
   .ix{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:4px;opacity:.7;}
   .label{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:5px;text-transform:uppercase;display:block;margin-top:6px;}
@@ -349,6 +359,7 @@
   <audio id="bgm" loop preload="auto" src="images/bgm.m4a"></audio>
   <div class="music-btn" id="musicBtn" aria-label="배경음악"><span class="ico">♪</span></div>
   <div class="theme-btn" id="themeBtn" role="button" aria-label="다크 모드 전환">🌙</div>
+  <div class="theme-btn theme-btn2" id="redBtn" role="button" aria-label="레드 모드 전환">🤍</div>
 
   <!-- 인트로 입장 화면 -->
   <div class="intro" id="intro">
@@ -373,7 +384,6 @@
 
   <!-- ============ GREETING ============ -->
   <section class="glass greeting reveal">
-    <div class="heart-wrap"><div class="heart-frame"><img class="heart-photo" src="images/gallery/g1.jpg" alt="변영준 김민선"/></div></div>
     <div class="quote cor">“</div>
     <p class="poem">
       <span class="em">팀장과 인턴으로 만나</span><br/>
@@ -627,20 +637,25 @@
     lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
   })();
 
-  /* 다크 모드 토글 (커버 사진을 갤러리 3번째 g3로 교체) */
+  /* 테마 모드: light / dark(커버=스파클러 야경) / red(화이트+레드, 커버=갤러리 첫사진 g1) */
   (function(){
-    var root=document.documentElement, btn=document.getElementById('themeBtn');
+    var root=document.documentElement;
+    var darkBtn=document.getElementById('themeBtn'), redBtn=document.getElementById('redBtn');
     var cover=document.querySelector('.cover .photo-frame img');
-    var LIGHT_IMG='images/main1.jpg', DARK_IMG='images/gallery/g3.jpg';
-    function apply(dark){
-      root.classList.toggle('dark', dark);
-      if(cover){ cover.src = dark ? DARK_IMG : LIGHT_IMG; }
-      btn.textContent = dark ? '☀️' : '🌙';
-      try{ localStorage.setItem('theme', dark ? 'dark' : 'light'); }catch(e){}
+    var IMG={light:'images/main1.jpg', dark:'images/main_dark.jpg', red:'images/gallery/g1.jpg'};
+    function setMode(mode){
+      if(mode!=='dark'&&mode!=='red') mode='light';
+      root.classList.toggle('dark', mode==='dark');
+      root.classList.toggle('red', mode==='red');
+      if(cover){ cover.src = IMG[mode]; }
+      darkBtn.textContent = mode==='dark' ? '☀️' : '🌙';
+      redBtn.textContent  = mode==='red'  ? '❤️' : '🤍';
+      try{ localStorage.setItem('theme', mode); }catch(e){}
     }
-    var saved=null; try{ saved=localStorage.getItem('theme'); }catch(e){}
-    apply(saved==='dark');
-    btn.addEventListener('click', function(e){ e.stopPropagation(); apply(!root.classList.contains('dark')); });
+    var saved='light'; try{ saved=localStorage.getItem('theme')||'light'; }catch(e){}
+    setMode(saved);
+    darkBtn.addEventListener('click', function(e){ e.stopPropagation(); setMode(root.classList.contains('dark')?'light':'dark'); });
+    redBtn.addEventListener('click', function(e){ e.stopPropagation(); setMode(root.classList.contains('red')?'light':'red'); });
   })();
 
   /* 스크롤 등장 */
