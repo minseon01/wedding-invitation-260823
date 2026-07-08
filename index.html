@@ -155,6 +155,15 @@
   .lightbox .lb-dots{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:6px;}
   .lightbox .lb-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);}
   .lightbox .lb-dots span.on{background:#fff;}
+  .lightbox .lb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+    border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);color:#fff;font-size:20px;line-height:1;
+    cursor:pointer;z-index:2;opacity:.9;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+    transition:opacity .25s ease, background .2s ease;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;}
+  .lightbox .lb-arrow:hover{background:rgba(255,255,255,.3);}
+  .lightbox .lb-arrow:active{background:rgba(255,255,255,.4);}
+  .lightbox .lb-prev{left:14px;}
+  .lightbox .lb-next{right:14px;}
+  .lightbox .lb-arrow.hide{opacity:0;pointer-events:none;}
 
   /* ===== LOCATION ===== */
   .location .hall{font-size:18px;font-weight:700;letter-spacing:2px;}
@@ -303,6 +312,8 @@
       <img src="images/gallery/g13.jpg" alt="갤러리"/>
       <img src="images/gallery/g14.jpg" alt="갤러리"/>
     </div>
+    <span class="lb-arrow lb-prev" id="lbPrev" aria-label="이전 사진">&#10094;</span>
+    <span class="lb-arrow lb-next" id="lbNext" aria-label="다음 사진">&#10095;</span>
     <div class="lb-dots" id="lbDots"></div>
   </div>
 
@@ -531,14 +542,25 @@
     var count=track.children.length, idx=0, w=0;
     dotsWrap.innerHTML=Array.from({length:count}).map(function(){return '<span></span>';}).join('');
     var dots=dotsWrap.children;
+    var prevBtn=document.getElementById('lbPrev'), nextBtn=document.getElementById('lbNext');
     function paintDots(){ for(var i=0;i<dots.length;i++){ dots[i].classList.toggle('on', i===idx); } }
+    function paintArrows(){ prevBtn.classList.toggle('hide', idx===0); nextBtn.classList.toggle('hide', idx===count-1); }
     function goTo(i, animate){
       idx=Math.max(0, Math.min(count-1, i));
-      w=lb.clientWidth;
+      w=track.clientWidth;
       track.classList.toggle('dragging', animate===false);
       track.style.transform='translateX(' + (-idx*w) + 'px)';
       paintDots();
+      paintArrows();
     }
+    prevBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx-1,true); });
+    nextBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx+1,true); });
+    document.addEventListener('keydown', function(e){
+      if(!lb.classList.contains('show')) return;
+      if(e.key==='ArrowLeft'){ goTo(idx-1,true); }
+      else if(e.key==='ArrowRight'){ goTo(idx+1,true); }
+      else if(e.key==='Escape'){ close(); }
+    });
     thumbs.forEach(function(im,i){
       im.addEventListener('click', function(){ lb.classList.add('show'); goTo(i,true); });
     });
@@ -547,7 +569,7 @@
 
     var startX=0, startY=0, dragging=false, moved=false, lastTouchEnd=0;
     track.addEventListener('touchstart', function(e){
-      startX=e.touches[0].clientX; startY=e.touches[0].clientY; dragging=true; moved=false; w=lb.clientWidth;
+      startX=e.touches[0].clientX; startY=e.touches[0].clientY; dragging=true; moved=false; w=track.clientWidth;
     }, {passive:true});
     track.addEventListener('touchmove', function(e){
       if(!dragging) return;
