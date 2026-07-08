@@ -544,7 +544,7 @@
     var dots=dotsWrap.children;
     var prevBtn=document.getElementById('lbPrev'), nextBtn=document.getElementById('lbNext');
     function paintDots(){ for(var i=0;i<dots.length;i++){ dots[i].classList.toggle('on', i===idx); } }
-    function paintArrows(){ prevBtn.classList.toggle('hide', idx===0); nextBtn.classList.toggle('hide', idx===count-1); }
+    function paintArrows(){ prevBtn.classList.remove('hide'); nextBtn.classList.remove('hide'); }
     function goTo(i, animate){
       idx=Math.max(0, Math.min(count-1, i));
       w=track.clientWidth;
@@ -553,12 +553,12 @@
       paintDots();
       paintArrows();
     }
-    prevBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx-1,true); });
-    nextBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx+1,true); });
+    prevBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx===0 ? count-1 : idx-1, true); });
+    nextBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx===count-1 ? 0 : idx+1, true); });
     document.addEventListener('keydown', function(e){
       if(!lb.classList.contains('show')) return;
-      if(e.key==='ArrowLeft'){ goTo(idx-1,true); }
-      else if(e.key==='ArrowRight'){ goTo(idx+1,true); }
+      if(e.key==='ArrowLeft'){ goTo(idx===0 ? count-1 : idx-1, true); }
+      else if(e.key==='ArrowRight'){ goTo(idx===count-1 ? 0 : idx+1, true); }
       else if(e.key==='Escape'){ close(); }
     });
     thumbs.forEach(function(im,i){
