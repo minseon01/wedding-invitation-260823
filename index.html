@@ -342,6 +342,15 @@
   .copy-btn{font-size:12px;}
   .map-btn{font-size:13px;}
 </style>
+<script>
+  /* 첫 페인트 전에 랜덤 테마 결정 → 라이트가 반짝 보이는 현상 방지 (다크/레드 랜덤 시작 대응) */
+  (function(){
+    var O=['light','dark','red'];
+    var m=O[Math.floor(Math.random()*O.length)];
+    window.__startMode=m;
+    document.documentElement.className = (m==='light' ? '' : m);
+  })();
+</script>
 </head>
 <body>
   <!-- 고정 배경 (그라데이션) -->
@@ -387,6 +396,14 @@
   <header class="cover">
     <div class="photo-frame">
       <img src="images/main1.jpg" alt="변영준 김민선 메인 사진" />
+      <script>
+        /* 다크/레드로 랜덤 시작 시, 커버 이미지를 첫 페인트 전에 교체 (라이트 사진 노출 방지) */
+        (function(){
+          var IMG={light:'images/main1.jpg', dark:'images/main_dark.jpg', red:'images/gallery/g1.jpg'};
+          var m=window.__startMode, el=document.currentScript.previousElementSibling;
+          if(el && el.tagName==='IMG' && IMG[m] && m!=='light'){ el.src=IMG[m]; }
+        })();
+      </script>
       <div class="nameplate">
         <div class="en cor">Youngjun<span class="amp">&hearts;</span>Minseon</div>
         <div class="dt">2026 . 08 . 23 &nbsp;SUNDAY &nbsp;PM 3:00</div>
@@ -659,18 +676,29 @@
     var IMG ={light:'images/main1.jpg', dark:'images/main_dark.jpg', red:'images/gallery/g1.jpg'};
     var ICON={light:'☀️', dark:'🌙', red:'❤️'};
     var ORDER=['light','dark','red'];
-    function setMode(mode){
-      if(ORDER.indexOf(mode)<0) mode='light';
+    /* 세 커버 이미지를 미리 로드 (전환 지연 방지) */
+    ORDER.forEach(function(m){ var p=new Image(); p.src=IMG[m]; });
+    function paint(mode){
       root.classList.toggle('dark', mode==='dark');
       root.classList.toggle('red', mode==='red');
       if(cover){ cover.src = IMG[mode]; }
       btn.textContent = ICON[mode];
     }
-    /* 페이지를 열 때마다 라이트/다크/레드 중 랜덤으로 시작 */
-    setMode(ORDER[Math.floor(Math.random()*ORDER.length)]);
+    function setMode(mode){
+      if(ORDER.indexOf(mode)<0) mode='light';
+      /* 새 이미지가 준비된 뒤에 클래스+이미지를 함께 적용
+         → 이전 사진이 새(다크) 프레임에 맞춰졌다가 바뀌는 깜빡임 제거 */
+      var img=new Image(), done=false;
+      function go(){ if(done) return; done=true; paint(mode); }
+      img.onload=go; img.onerror=go;
+      img.src=IMG[mode];
+      if(img.complete) go();
+    }
+    /* head에서 정한 랜덤 시작 모드 사용 (클래스·커버는 이미 조기 적용됨) */
+    var idx=ORDER.indexOf(window.__startMode); if(idx<0) idx=0;
+    paint(ORDER[idx]);
     btn.addEventListener('click', function(e){ e.stopPropagation();
-      var cur = root.classList.contains('dark') ? 'dark' : root.classList.contains('red') ? 'red' : 'light';
-      setMode(ORDER[(ORDER.indexOf(cur)+1)%ORDER.length]);
+      idx=(idx+1)%ORDER.length; setMode(ORDER[idx]);
     });
   })();
 
