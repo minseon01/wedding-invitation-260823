@@ -286,11 +286,12 @@
   .ct-tab.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink);}
   .ct-panel{display:none;}
   .ct-panel.active{display:block;}
-  .ct-person{padding:16px 2px;text-align:left;}
+  .ct-person{padding:15px 2px;text-align:left;}
   .ct-person+.ct-person{border-top:1px solid rgba(120,130,150,.18);}
-  .ct-role{font-family:var(--gothic);font-size:12px;color:var(--ink-soft);}
-  .ct-name{font-size:17px;font-weight:700;letter-spacing:1px;margin-top:1px;margin-bottom:11px;}
-  .ct-pbtns{display:flex;gap:8px;}
+  .ct-role{display:inline;font-family:var(--gothic);font-size:13px;color:var(--ink-soft);vertical-align:baseline;}
+  .ct-role::after{content:" · ";opacity:.55;}
+  .ct-name{display:inline;font-size:17px;font-weight:700;letter-spacing:1px;vertical-align:baseline;}
+  .ct-pbtns{display:flex;gap:8px;margin-top:11px;}
   .ct-pbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border-radius:11px;
     font-family:var(--gothic);font-size:13px;font-weight:800;letter-spacing:.3px;text-decoration:none;
     transition:transform .15s ease, filter .15s ease;}
@@ -549,7 +550,7 @@
     <div class="map-btns">
       <a class="map-btn naver" href="https://map.naver.com/p/search/더화이트베일 서초" target="_blank" rel="noopener"><span class="mb-ico">N</span>네이버지도</a>
       <a class="map-btn kakao" href="https://map.kakao.com/?q=더화이트베일 서초중앙로 14" target="_blank" rel="noopener"><span class="mb-ico">K</span>카카오맵</a>
-      <a class="map-btn tmap" href="tmap://?rGoName=%EB%8D%94%20%ED%99%94%EC%9D%B4%ED%8A%B8%20%EB%B2%A0%EC%9D%BC&rGoX=127.017676&rGoY=37.483541" rel="noopener"><span class="mb-ico">T</span>티맵</a>
+      <a class="map-btn tmap" id="tmapBtn" href="tmap://route?goalname=%EB%8D%94%20%ED%99%94%EC%9D%B4%ED%8A%B8%20%EB%B2%A0%EC%9D%BC&goalx=127.017676&goaly=37.483541" rel="noopener"><span class="mb-ico">T</span>티맵</a>
     </div>
     <div class="transit">
       <div class="transit-item">
@@ -731,6 +732,29 @@
     if(cp) cp.addEventListener('click', function(){
       navigator.clipboard.writeText(URL).then(function(){ toast('청첩장 주소가 복사되었어요'); })
         .catch(function(){ toast('복사에 실패했어요'); });
+    });
+  })();
+
+  /* 티맵: 앱 스킴 실행 → 미설치 시 스토어로 안내 */
+  (function(){
+    var btn=document.getElementById('tmapBtn');
+    if(!btn) return;
+    var scheme=btn.getAttribute('href');
+    var isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var isAndroid=/Android/i.test(navigator.userAgent);
+    var store=isIOS ? 'https://apps.apple.com/kr/app/id431589174'
+      : 'https://play.google.com/store/apps/details?id=com.skt.tmap.ku';
+    btn.addEventListener('click', function(e){
+      /* 모바일에서만 스킴+폴백 처리, 데스크톱은 기본 동작 유지 */
+      if(!isIOS && !isAndroid) return;
+      e.preventDefault();
+      var t=Date.now(), timer=setTimeout(function(){
+        if(!document.hidden && Date.now()-t<2500){ window.location.href=store; }
+      }, 1500);
+      function cancel(){ clearTimeout(timer); }
+      document.addEventListener('visibilitychange', function(){ if(document.hidden) cancel(); }, {once:true});
+      window.addEventListener('pagehide', cancel, {once:true});
+      window.location.href=scheme;
     });
   })();
 
