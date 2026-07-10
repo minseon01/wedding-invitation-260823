@@ -224,8 +224,11 @@
   .location .hall{font-size:18px;font-weight:700;letter-spacing:2px;}
   .location .floor{font-size:13px;color:var(--ink-soft);margin-top:8px;}
   .location .addr{font-size:12px;color:var(--ink-soft);opacity:.85;margin-top:5px;}
-  .mapbox{margin-top:22px;height:210px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 16px rgba(20,30,55,.12);}
+  .mapbox{position:relative;margin-top:22px;height:210px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 16px rgba(20,30,55,.12);}
   .mapbox iframe{width:100%;height:100%;border:0;display:block;}
+  .map-pin-label{position:absolute;top:44%;left:50%;transform:translate(-50%,-100%);z-index:2;
+    background:#fff;color:var(--ink);font-size:12px;font-weight:700;padding:6px 12px;border-radius:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.25);white-space:nowrap;pointer-events:none;}
   .map-btns{display:flex;gap:8px;margin-top:16px;}
   .map-btn{flex:1;padding:13px 0;border-radius:14px;background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.5);
     color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;
@@ -430,7 +433,6 @@
 
   <!-- ============ DATE ============ -->
   <section class="glass dark datesec reveal">
-    <div class="head"><span class="ix">i.</span><span class="label">Save the Date</span></div>
     <div class="big"><span class="yr">2026 . AUGUST</span>23</div>
     <div class="dow">Sunday</div>
     <div class="time">오후 3시</div>
@@ -459,7 +461,6 @@
 
   <!-- ============ GALLERY ============ -->
   <section class="glass gallery reveal">
-    <div class="head"><span class="ix">ii.</span><span class="label">Gallery</span></div>
     <div class="grid">
       <img class="ph" src="images/gallery/g1.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g2.jpg" loading="lazy" alt="갤러리"/>
@@ -478,11 +479,11 @@
 
   <!-- ============ LOCATION ============ -->
   <section class="glass location reveal">
-    <div class="head"><span class="ix">iii.</span><span class="label">Location</span></div>
     <div class="hall">더화이트베일</div>
     <div class="floor">V홀 · 3층</div>
     <div class="addr">서울특별시 서초구 서초중앙로 14</div>
     <div class="mapbox">
+      <span class="map-pin-label">📍 더화이트베일</span>
       <iframe src="https://maps.google.com/maps?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%84%9C%EC%B4%88%EA%B5%AC%20%EC%84%9C%EC%B4%88%EC%A4%91%EC%95%99%EB%A1%9C%2014%20%EB%8D%94%ED%99%94%EC%9D%B4%ED%8A%B8%EB%B2%A0%EC%9D%BC&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <div class="map-btns">
@@ -512,7 +513,6 @@
 
   <!-- ============ CONTACT ============ -->
   <section class="glass contact reveal">
-    <div class="head"><span class="ix">iv.</span><span class="label">Contact</span></div>
     <div class="ct-row">
       <div class="ct-who"><div class="ct-role">Groom</div><div class="ct-name">변영준</div></div>
       <div class="ct-acts">
@@ -537,7 +537,6 @@
 
   <!-- ============ ACCOUNT ============ -->
   <section class="glass dark account reveal">
-    <div class="head"><span class="ix">v.</span><span class="label">With Heart</span></div>
     <p class="lead">참석이 어려우신 분들을 위해<br/>마음 전하실 곳을 안내드립니다.</p>
     <div class="acc-tabs">
       <button class="acc-tab active" data-tab="groom">신랑측</button>
