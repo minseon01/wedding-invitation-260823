@@ -14,6 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/nanumsquareneo.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet" />
 <style>
@@ -27,11 +29,12 @@
     --white:#ffffff;
     --shadow:0 8px 32px rgba(20,30,55,.18);
     --radius:26px;
+    --kfont:'NanumSquareNeo','Apple SD Gothic Neo',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
   body{
-    font-family:'NanumSquareNeo','Apple SD Gothic Neo',sans-serif;
+    font-family:var(--kfont);
     color:var(--ink);
     line-height:2;
     letter-spacing:.2px;
@@ -50,6 +53,9 @@
   .orb{position:fixed;border-radius:50%;filter:blur(8px);z-index:-2;opacity:.6;mix-blend-mode:screen;}
   .orb.a{width:200px;height:200px;top:8%;right:-50px;background:radial-gradient(circle,#fff7e8,transparent 70%);}
   .orb.b{width:240px;height:240px;bottom:14%;left:-70px;background:radial-gradient(circle,#e6f3e2,transparent 70%);}
+  /* 빛가루 캔버스 (콘텐츠 위, 버튼 아래) */
+  .fx{position:fixed;inset:0;width:100%;height:100%;z-index:40;pointer-events:none;opacity:0;transition:opacity 1.2s ease;}
+  .fx.on{opacity:1;}
 
   .wrap{max-width:440px;margin:0 auto;position:relative;padding:0;}
   .content{padding-top:0;}
@@ -98,6 +104,14 @@
   }
   @keyframes themeHalo{ 0%{transform:scale(.85);opacity:.5;} 55%,100%{transform:scale(1.65);opacity:0;} }
   @media (prefers-reduced-motion:reduce){ .theme-btn,.theme-btn::after{animation:none;} }
+  /* 폰트 전환 버튼 (테마 버튼 아래) */
+  .font-btn{position:fixed;top:66px;left:16px;z-index:60;width:42px;height:42px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:700;line-height:1;
+    background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);color:var(--ink);
+    box-shadow:0 2px 10px rgba(20,30,55,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    font-family:var(--kfont);transition:background .25s ease, transform .2s ease;-webkit-tap-highlight-color:transparent;}
+  .font-btn:active{transform:scale(.9);}
+  html.dark .font-btn{background:rgba(44,52,72,.55);border-color:rgba(255,255,255,.22);}
   html.dark .theme-btn{background:rgba(44,52,72,.55);border-color:rgba(255,255,255,.22);}
   html.dark{ --ink:#eef2f8; --ink-soft:#c2ccdc; --glass:rgba(28,36,54,.92); --glass-line:rgba(255,255,255,.16);
     --shadow:0 8px 32px rgba(0,0,0,.45); }
@@ -131,6 +145,11 @@
   html.red .cover-kr .kn .amp{color:#e0324a;}
   html.red .scrolldown, html.red .quote{color:#d62c42;}
 
+  /* ===== 한글 폰트 변형 (좌측 상단 '가' 버튼으로 순환) ===== */
+  html.kf-myeongjo{ --kfont:'Nanum Myeongjo','Apple SD Gothic Neo',serif; }
+  html.kf-gowun{ --kfont:'Gowun Batang','Apple SD Gothic Neo',serif; }
+  html.kf-maru{ --kfont:'MaruBuri','Nanum Myeongjo',serif; }
+
   .ix{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:4px;opacity:.7;}
   .label{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:5px;text-transform:uppercase;display:block;margin-top:6px;}
   .head{margin-bottom:30px;}
@@ -151,8 +170,11 @@
   .nameplate .en{font-family:'Cormorant Garamond',serif;font-size:34px;letter-spacing:4px;font-weight:400;}
   .nameplate .en{white-space:nowrap;}
   .nameplate .en .amp{display:inline-block;font-size:20px;opacity:.95;margin:0 9px;color:#ffffff;vertical-align:middle;position:relative;top:-3px;}
-  .nameplate .dt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;letter-spacing:3px;margin-top:10px;opacity:.96;}
-  .nameplate .tm{font-family:'NanumSquareNeo',sans-serif;font-size:14px;letter-spacing:5px;margin-top:5px;opacity:.95;}
+  .nameplate .dt{font-family:'Cormorant Garamond',serif;font-style:normal;font-size:15px;letter-spacing:3px;margin-top:10px;opacity:.96;
+    font-feature-settings:'lnum' 1;font-variant-numeric:lining-nums;}
+  .nameplate .venue-line{font-family:var(--kfont);font-size:12.5px;letter-spacing:1px;margin-top:8px;opacity:.92;font-weight:500;
+    text-shadow:0 1px 6px rgba(0,0,0,.45);}
+  .nameplate .tm{font-family:var(--kfont);font-size:14px;letter-spacing:5px;margin-top:5px;opacity:.95;}
   .cover-kr{text-align:center;padding:34px 0 8px;margin-bottom:14px;}
   .cover-kr .kn{font-size:18px;letter-spacing:7px;font-weight:700;color:var(--ink);text-shadow:0 1px 10px rgba(255,255,255,.5);}
   .cover-kr .ks{font-size:12px;letter-spacing:4px;color:var(--ink-soft);margin-top:7px;}
@@ -165,6 +187,13 @@
   .poem .ln{display:block;opacity:0;transform:translateY(14px);transition:opacity .7s ease, transform .7s ease;}
   .poem .ln.stanza{margin-top:22px;}
   .poem.show .ln{opacity:1;transform:none;}
+  .couple-sign{margin-top:34px;padding-top:26px;border-top:1px solid rgba(32,40,59,.12);}
+  .couple-sign .sign-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;letter-spacing:1px;color:var(--ink-soft);opacity:.85;margin-bottom:10px;}
+  .couple-sign .sign-names{font-size:16px;font-weight:700;color:var(--ink);letter-spacing:1px;}
+  .couple-sign .sign-names .rk{font-size:12px;font-weight:400;color:var(--ink-soft);margin-right:3px;}
+  .couple-sign .sign-names .dot{margin:0 8px;color:var(--ink-soft);opacity:.6;}
+  html.dark .couple-sign{border-top-color:rgba(255,255,255,.16);}
+  html.red .couple-sign .sign-label{color:#d62c42;}
 
   /* ===== FAMILY ===== */
   .family .prow{padding:18px 0;}
@@ -174,8 +203,8 @@
   .family .child{font-size:18px;font-weight:700;letter-spacing:3px;color:var(--ink);}
 
   /* ===== DATE ===== */
-  .datesec .date-line{font-family:'NanumSquareNeo',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;}
-  .datesec .date-line-en{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:2px;opacity:.75;margin-top:8px;}
+  .datesec .date-line{font-family:var(--kfont);font-size:16px;font-weight:700;letter-spacing:.5px;}
+  .datesec .date-line-en{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;letter-spacing:1.5px;opacity:.75;margin-top:6px;}
   .cal{max-width:280px;margin:28px auto 0;}
   .cal table{width:100%;border-collapse:collapse;}
   .cal th{font-family:'Cormorant Garamond',serif;font-size:11px;opacity:.6;font-weight:400;padding:7px 0;}
@@ -253,7 +282,7 @@
   .ct-row{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;}
   .ct-row+.ct-row{border-top:1px solid rgba(255,255,255,.4);}
   .ct-who{text-align:left;}
-  .ct-role{font-family:'NanumSquareNeo',sans-serif;font-style:normal;font-size:12px;opacity:.65;}
+  .ct-role{font-family:var(--kfont);font-style:normal;font-size:12px;opacity:.65;}
   .ct-name{font-size:15px;font-weight:700;letter-spacing:2px;margin-top:2px;}
   .ct-acts{display:flex;gap:8px;}
   .ct-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);
@@ -271,14 +300,14 @@
   .account .lead{font-size:13px;opacity:.8;line-height:2.1;margin-bottom:24px;}
   .acc-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:6px;}
   .acc-tab{flex:1;padding:12px 0;background:none;border:none;color:rgba(255,255,255,.55);
-    font-family:'NanumSquareNeo',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;position:relative;}
+    font-family:var(--kfont);font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;position:relative;}
   .acc-tab.active{color:#fff;}
   .acc-tab.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#fff;}
   .acc-panel{display:none;}
   .acc-panel.active{display:block;}
   .acc-item{display:flex;justify-content:space-between;align-items:center;text-align:left;padding:16px 2px;}
   .acc-item+.acc-item{border-top:1px solid rgba(255,255,255,.18);}
-  .acc-role{font-family:'NanumSquareNeo',sans-serif;font-style:normal;font-size:12px;opacity:.6;}
+  .acc-role{font-family:var(--kfont);font-style:normal;font-size:12px;opacity:.6;}
   .acc-num{font-size:13px;margin-top:4px;letter-spacing:.5px;}
   .acc-name{font-size:11px;opacity:.7;margin-top:2px;}
   .copy-btn{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#eef2f8;
@@ -290,7 +319,7 @@
   .outro .mono{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;letter-spacing:4px;}
   .outro .mono .amp{font-style:italic;opacity:.6;margin:0 4px;}
   .share-btn{margin-top:22px;padding:13px 26px;border-radius:30px;border:1px solid rgba(255,255,255,.6);
-    background:rgba(255,255,255,.5);color:var(--ink);font-family:'NanumSquareNeo',sans-serif;font-size:13px;
+    background:rgba(255,255,255,.5);color:var(--ink);font-family:var(--kfont);font-size:13px;
     font-weight:700;letter-spacing:.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
   .share-btn:active{background:rgba(255,255,255,.75);}
   .outro .thanks{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;letter-spacing:3px;margin-top:14px;color:var(--ink-soft);}
@@ -328,7 +357,8 @@
   .intro.hide{opacity:0;pointer-events:none;}
   .intro .ien{font-family:'Cormorant Garamond',serif;font-size:30px;letter-spacing:3px;text-shadow:0 2px 14px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;}
   .intro .ien .h{font-size:19px;margin:0 9px;}
-  .intro .idt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:2px;margin-top:12px;opacity:.92;}
+  .intro .idt{font-family:'Cormorant Garamond',serif;font-style:normal;font-size:14px;letter-spacing:2px;margin-top:12px;opacity:.92;
+    font-feature-settings:'lnum' 1;font-variant-numeric:lining-nums;}
   .intro .ibtn{margin-top:32px;padding:13px 30px;border-radius:30px;font-size:13px;letter-spacing:4px;color:#fff;
     background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 18px rgba(0,0,0,.2);animation:breathe 1.9s ease-in-out infinite;}
@@ -375,6 +405,8 @@
   <div class="bg"></div>
   <div class="orb a"></div>
   <div class="orb b"></div>
+  <!-- 여름밤 빛가루(반딧불) 흩날림 -->
+  <canvas class="fx" id="fx" aria-hidden="true"></canvas>
 
   <div class="toast" id="toast"></div>
   <div class="lightbox" id="lightbox">
@@ -402,6 +434,7 @@
   <audio id="bgm" loop preload="auto" src="images/bgm.m4a"></audio>
   <div class="music-btn" id="musicBtn" aria-label="배경음악"><span class="ico">♪</span></div>
   <div class="theme-btn" id="themeBtn" role="button" aria-label="테마 전환 (해·달·하트)">☀️</div>
+  <div class="font-btn" id="fontBtn" role="button" aria-label="글씨체 전환">가</div>
 
   <!-- 인트로 입장 화면 -->
   <div class="intro" id="intro">
@@ -417,6 +450,7 @@
       <div class="nameplate">
         <div class="en cor">Youngjun<span class="amp">&hearts;</span>Minseon</div>
         <div class="dt">2026 . 08 . 23 &nbsp;SUNDAY &nbsp;PM 3:00</div>
+        <div class="venue-line">남부터미널 · 더화이트베일 3층 V홀</div>
       </div>
       <div class="scrolldown">SCROLL ↓</div>
     </div>
@@ -426,9 +460,8 @@
 
   <!-- ============ GREETING ============ -->
   <section class="glass greeting reveal">
-    <div class="quote cor">“</div>
     <p class="poem">
-      <span class="ln em">직장동료로 만나</span>
+      <span class="ln em">직장 동료로 만나</span>
       <span class="ln">어느새 사업 파트너이자</span>
       <span class="ln">인생의 파트너가 되었습니다.</span>
       <span class="ln stanza">서로 다른 두 사람이</span>
@@ -438,6 +471,10 @@
       <span class="ln stanza">함께해 주시면</span>
       <span class="ln">더없는 기쁨이 되겠습니다.</span>
     </p>
+    <div class="couple-sign reveal">
+      <div class="sign-label">마음을 담아</div>
+      <div class="sign-names"><span class="rk">신랑</span> 변영준 <span class="dot">·</span> <span class="rk">신부</span> 김민선</div>
+    </div>
   </section>
 
   <!-- ============ DATE ============ -->
@@ -772,6 +809,25 @@
     });
   })();
 
+  /* 글씨체 전환: 좌측 상단 '가' 버튼으로 순환 (모던 → 명조 → 고운바탕 → 마루부리) */
+  (function(){
+    var root=document.documentElement, btn=document.getElementById('fontBtn');
+    if(!btn) return;
+    var FONTS=[
+      {cls:'',            name:'나눔스퀘어 (기본)'},
+      {cls:'kf-myeongjo', name:'나눔명조'},
+      {cls:'kf-gowun',    name:'고운바탕'},
+      {cls:'kf-maru',     name:'마루부리'}
+    ];
+    var fi=0;
+    btn.addEventListener('click', function(e){ e.stopPropagation();
+      root.classList.remove('kf-myeongjo','kf-gowun','kf-maru');
+      fi=(fi+1)%FONTS.length;
+      if(FONTS[fi].cls) root.classList.add(FONTS[fi].cls);
+      toast('글씨체: '+FONTS[fi].name);
+    });
+  })();
+
   /* 스크롤 등장 */
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('show');});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
@@ -788,6 +844,73 @@
       });
     }, {threshold:.35});
     poemIo.observe(poem);
+  })();
+
+  /* 여름밤 빛가루(반딧불) 흩날림 — 라이트 테마에서만 표시 */
+  (function(){
+    var canvas=document.getElementById('fx');
+    if(!canvas || !canvas.getContext) return;
+    var ctx=canvas.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1, 2);
+    var W=0, H=0, parts=[], reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    function resize(){
+      W=canvas.clientWidth; H=canvas.clientHeight;
+      canvas.width=W*dpr; canvas.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    function make(){
+      var n=Math.round(Math.min(34, Math.max(18, W/16)));
+      parts=[];
+      for(var i=0;i<n;i++){
+        parts.push({
+          x:Math.random()*W, y:Math.random()*H,
+          r:0.8+Math.random()*2.2,
+          sp:0.15+Math.random()*0.5,          /* 위로 떠오르는 속도 */
+          sway:0.4+Math.random()*1.1,          /* 좌우 흔들림 폭 */
+          ph:Math.random()*Math.PI*2,          /* 위상 */
+          tw:0.6+Math.random()*1.6,            /* 반짝임 속도 */
+          hue:38+Math.random()*14              /* 따뜻한 노랑~아이보리 */
+        });
+      }
+    }
+    resize(); make();
+    window.addEventListener('resize', function(){ resize(); make(); });
+
+    var t=0, raf=null;
+    function draw(){
+      t+=0.016;
+      ctx.clearRect(0,0,W,H);
+      for(var i=0;i<parts.length;i++){
+        var p=parts[i];
+        p.y-=p.sp; p.ph+=0.01;
+        var x=p.x+Math.sin(p.ph)*p.sway*18;
+        if(p.y< -10){ p.y=H+10; p.x=Math.random()*W; }
+        var a=0.35+0.45*(0.5+0.5*Math.sin(t*p.tw+p.ph));
+        ctx.beginPath();
+        ctx.arc(x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle='hsla('+p.hue+',90%,72%,'+a+')';
+        ctx.shadowColor='hsla('+p.hue+',95%,68%,'+a+')';
+        ctx.shadowBlur=8;
+        ctx.fill();
+      }
+      ctx.shadowBlur=0;
+      raf=requestAnimationFrame(draw);
+    }
+    function start(){ if(!raf && !reduce){ raf=requestAnimationFrame(draw); } canvas.classList.add('on'); }
+    function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } canvas.classList.remove('on'); ctx.clearRect(0,0,W,H); }
+
+    /* 라이트 테마일 때만 표시 (다크/레드에서는 숨김) */
+    function sync(){
+      var c=document.documentElement.classList;
+      if(!c.contains('dark') && !c.contains('red')){ start(); } else { stop(); }
+    }
+    sync();
+    /* 테마·글씨체 버튼 클릭 후 테마 상태 반영 */
+    var tb=document.getElementById('themeBtn');
+    if(tb) tb.addEventListener('click', function(){ setTimeout(sync, 60); });
+    /* 문서 가시성 변경 시 정지/재개 (배터리 절약) */
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+      else{ sync(); }
+    });
   })();
 </script>
 </body>
