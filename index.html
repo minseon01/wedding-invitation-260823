@@ -144,7 +144,7 @@
   .hairline{width:38px;height:1px;background:currentColor;opacity:.45;margin:14px auto 0;}
 
   /* ===== COVER (풀스크린) ===== */
-  .cover{position:relative;width:100%;max-width:440px;margin:0 auto;height:100vh;height:100svh;margin-bottom:0;}
+  .cover{position:relative;width:100%;max-width:440px;margin:0 auto;height:100svh;height:var(--coverh,100svh);margin-bottom:0;}
   .cover .photo-frame{position:relative;width:100%;height:100%;overflow:hidden;}
   .cover .photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center 38%;display:block;}
   .cover .photo-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,28,45,.22),rgba(20,28,45,0) 26%,rgba(20,28,45,0) 50%,rgba(20,28,45,.66));}
@@ -549,7 +549,7 @@
     <div class="map-btns">
       <a class="map-btn naver" href="https://map.naver.com/p/search/더화이트베일 서초" target="_blank" rel="noopener"><span class="mb-ico">N</span>네이버</a>
       <a class="map-btn kakao" href="https://map.kakao.com/?q=더화이트베일 서초중앙로 14" target="_blank" rel="noopener"><span class="mb-ico">K</span>카카오</a>
-      <a class="map-btn tmap" href="tmap://search?name=더화이트베일" rel="noopener"><span class="mb-ico">T</span>티맵</a>
+      <a class="map-btn tmap" href="tmap://?rGoName=%EB%8D%94%20%ED%99%94%EC%9D%B4%ED%8A%B8%20%EB%B2%A0%EC%9D%BC&rGoX=127.017676&rGoY=37.483541" rel="noopener"><span class="mb-ico">T</span>티맵</a>
     </div>
     <div class="transit">
       <div class="transit-item">
@@ -614,7 +614,10 @@
       </div>
       <div class="ct-person">
         <div class="ct-role">신부 아버지</div><div class="ct-name">김영환</div>
-        <div class="ct-pbtns"><div class="ct-pending">연락처 준비중</div></div>
+        <div class="ct-pbtns">
+          <a class="ct-pbtn call" href="tel:010-4752-5280"><span class="pb-ico">📞</span>전화하기</a>
+          <a class="ct-pbtn sms" href="sms:010-4752-5280"><span class="pb-ico">💬</span>문자보내기</a>
+        </div>
       </div>
       <div class="ct-person">
         <div class="ct-role">신부 어머니</div><div class="ct-name">강효순</div>
@@ -672,6 +675,18 @@
 </div></div>
 
 <script>
+  /* 커버 높이 고정: 로드 시점 뷰포트 높이를 픽셀로 잠가, 스크롤 중 주소창이
+     접혀도 커버가 리사이즈되며 사진이 확대되는 현상을 방지 (너비 변경 시에만 갱신) */
+  (function(){
+    var root=document.documentElement, lastW=window.innerWidth;
+    function setH(){ root.style.setProperty('--coverh', window.innerHeight+'px'); }
+    setH();
+    window.addEventListener('resize', function(){
+      if(window.innerWidth!==lastW){ lastW=window.innerWidth; setH(); }
+    });
+    window.addEventListener('orientationchange', function(){ setTimeout(setH, 300); });
+  })();
+
   /* 카운트다운 (시간 미정 → 12:00 임시) */
   var WEDDING = new Date('2026-08-23T15:00:00+09:00').getTime();
   function tick(){
