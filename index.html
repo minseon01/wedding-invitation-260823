@@ -258,21 +258,6 @@
     box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s ease, transform .3s ease;white-space:nowrap;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  /* ===== RSVP ===== */
-  .rsvp .lead{font-size:13px;color:var(--ink-soft);line-height:2.1;margin-bottom:22px;}
-  .rsvp-form{text-align:left;}
-  .rsvp-input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.6);
-    background:rgba(255,255,255,.6);font-family:'NanumSquareNeo',sans-serif;font-size:14px;color:var(--ink);margin-bottom:10px;}
-  .rsvp-input::placeholder{color:var(--ink-soft);opacity:.7;}
-  .rsvp-radio{display:flex;gap:10px;margin-bottom:10px;}
-  .rsvp-radio label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 0;
-    border-radius:12px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.4);
-    font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;}
-  .rsvp-radio input{accent-color:var(--ink);}
-  .rsvp-btn{width:100%;padding:14px 0;border-radius:12px;border:none;background:var(--ink);color:#fff;
-    font-family:'NanumSquareNeo',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;margin-top:4px;}
-  .rsvp-btn:active{opacity:.85;}
-
   /* ===== ACCOUNT (dark glass) ===== */
   .account .lead{font-size:13px;opacity:.8;line-height:2.1;margin-bottom:24px;}
   .acc-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:6px;}
@@ -530,20 +515,6 @@
     </div>
   </section>
 
-  <!-- ============ RSVP ============ -->
-  <section class="glass rsvp reveal">
-    <p class="lead">참석 여부를 미리 알려주시면<br/>준비하는 데 큰 도움이 됩니다.</p>
-    <div class="rsvp-form">
-      <input type="text" id="rsvpName" class="rsvp-input" placeholder="성함을 입력해주세요"/>
-      <div class="rsvp-radio">
-        <label><input type="radio" name="rsvpAttend" value="참석" checked/> 참석</label>
-        <label><input type="radio" name="rsvpAttend" value="불참"/> 불참</label>
-      </div>
-      <input type="number" id="rsvpCount" class="rsvp-input" placeholder="참석 인원 수" min="1" value="1"/>
-      <button class="rsvp-btn" id="rsvpSubmit">회신 보내기</button>
-    </div>
-  </section>
-
   <!-- ============ CONTACT ============ -->
   <section class="glass contact reveal">
     <div class="ct-row">
@@ -645,22 +616,6 @@
     var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
     clearTimeout(_tt); _tt=setTimeout(function(){ t.classList.remove('show'); }, 1800);
   }
-
-  /* RSVP: 참석 여부를 문자로 전송 */
-  (function(){
-    var btn=document.getElementById('rsvpSubmit');
-    if(!btn) return;
-    btn.addEventListener('click', function(){
-      var name=document.getElementById('rsvpName').value.trim();
-      var attend=document.querySelector('input[name="rsvpAttend"]:checked').value;
-      var count=document.getElementById('rsvpCount').value || '1';
-      if(!name){ toast('성함을 입력해주세요'); return; }
-      var msg='[결혼식 참석 회신] '+name+' - '+attend+(attend==='참석' ? ' ('+count+'명)' : '');
-      var isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
-      var sep=isIOS ? '&' : '?';
-      location.href='sms:010-8776-2382'+sep+'body='+encodeURIComponent(msg);
-    });
-  })();
 
   /* 공유하기 */
   (function(){
