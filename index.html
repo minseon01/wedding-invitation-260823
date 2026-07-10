@@ -65,7 +65,7 @@
     border-top:1px solid var(--glass-line);
     border-radius:0;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-    padding:72px 30px;
+    padding:40px 30px;
     margin-bottom:0;
     text-align:center;
     overflow:hidden;
@@ -162,6 +162,9 @@
   .greeting .mrt-logo{display:block;height:24px;width:auto;margin:0 auto 26px;opacity:.92;}
   .greeting .poem{font-size:15px;color:var(--ink-soft);line-height:2.5;}
   .greeting .poem .em{font-weight:700;color:var(--ink);}
+  .poem .ln{display:block;opacity:0;transform:translateY(14px);transition:opacity .7s ease, transform .7s ease;}
+  .poem .ln.stanza{margin-top:22px;}
+  .poem.show .ln{opacity:1;transform:none;}
 
   /* ===== FAMILY ===== */
   .family .prow{padding:18px 0;}
@@ -312,6 +315,9 @@
   .music-btn .ico{font-size:17px;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,.35);display:inline-block;}
   .music-btn.playing .ico{animation:spin 3.4s linear infinite;}
   .music-btn:not(.playing){animation:pulse 1.8s ease-in-out infinite;}
+  .music-btn::after{content:"";position:absolute;left:50%;top:50%;width:2px;height:24px;background:#fff;
+    transform:translate(-50%,-50%) rotate(45deg);opacity:0;transition:opacity .2s ease;box-shadow:0 0 3px rgba(0,0,0,.5);}
+  .music-btn:not(.playing)::after{opacity:1;}
   @keyframes spin{to{transform:rotate(360deg);}}
   @keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.6);}50%{box-shadow:0 4px 22px rgba(255,255,255,.55), inset 0 1px 0 rgba(255,255,255,.6);}}
 
@@ -422,15 +428,15 @@
   <section class="glass greeting reveal">
     <div class="quote cor">“</div>
     <p class="poem">
-      <span class="em">직장동료로 만나</span><br/>
-      어느새 사업 파트너이자<br/>
-      인생의 파트너가 되었습니다.<br/><br/>
-      서로 다른 두 사람이<br/>
-      마주 보며 하나의 길을 그립니다.<br/><br/>
-      그 시작의 순간에<br/>
-      소중한 분들을 모시고 싶습니다.<br/><br/>
-      함께해 주시면<br/>
-      더없는 기쁨이 되겠습니다.
+      <span class="ln em">직장동료로 만나</span>
+      <span class="ln">어느새 사업 파트너이자</span>
+      <span class="ln">인생의 파트너가 되었습니다.</span>
+      <span class="ln stanza">서로 다른 두 사람이</span>
+      <span class="ln">마주 보며 하나의 길을 그립니다.</span>
+      <span class="ln stanza">그 시작의 순간에</span>
+      <span class="ln">소중한 분들을 모시고 싶습니다.</span>
+      <span class="ln stanza">함께해 주시면</span>
+      <span class="ln">더없는 기쁨이 되겠습니다.</span>
     </p>
   </section>
 
@@ -595,7 +601,7 @@
   /* 배경음악: 인트로 입장 시 재생(모바일·PC 공통) + 버튼 토글 */
   (function(){
     var bgm=document.getElementById('bgm'), mb=document.getElementById('musicBtn'), intro=document.getElementById('intro');
-    function paint(p){ mb.classList.toggle('playing',p); mb.querySelector('.ico').textContent = p?'♫':'♪'; }
+    function paint(p){ mb.classList.toggle('playing',p); }
     mb.addEventListener('click', function(e){ e.stopPropagation(); if(bgm.paused){bgm.play();}else{bgm.pause();} });
     bgm.addEventListener('play', function(){ paint(true); });
     bgm.addEventListener('pause', function(){ paint(false); });
@@ -667,21 +673,6 @@
       hint.classList.add('hide');
       if(!ticking){ ticking=true; requestAnimationFrame(function(){ paint(); ticking=false; }); }
     }, {passive:true});
-
-    /* 갤러리가 처음 화면에 보일 때 살짝 좌우로 흔들어 스크롤 가능함을 암시 */
-    var nudged=false;
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(e.isIntersecting && !nudged){
-          nudged=true;
-          setTimeout(function(){
-            grid.scrollTo({left:36, behavior:'smooth'});
-            setTimeout(function(){ grid.scrollTo({left:0, behavior:'smooth'}); }, 500);
-          }, 700);
-        }
-      });
-    }, {threshold:.4});
-    io.observe(grid);
   })();
 
   /* 갤러리 라이트박스 (스와이프 슬라이드) */
@@ -784,6 +775,20 @@
   /* 스크롤 등장 */
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('show');});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+  /* 인사말: 한 줄씩 순차적으로 등장 */
+  (function(){
+    var poem=document.querySelector('.poem');
+    if(!poem) return;
+    var lines=poem.querySelectorAll('.ln');
+    lines.forEach(function(ln,i){ ln.style.transitionDelay=(i*90)+'ms'; });
+    var poemIo=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){ poem.classList.add('show'); poemIo.disconnect(); }
+      });
+    }, {threshold:.35});
+    poemIo.observe(poem);
+  })();
 </script>
 </body>
 </html>
