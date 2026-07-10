@@ -244,7 +244,7 @@
   .ct-row{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;}
   .ct-row+.ct-row{border-top:1px solid rgba(255,255,255,.4);}
   .ct-who{text-align:left;}
-  .ct-role{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;opacity:.65;}
+  .ct-role{font-family:'NanumSquareNeo',sans-serif;font-style:normal;font-size:12px;opacity:.65;}
   .ct-name{font-size:15px;font-weight:700;letter-spacing:2px;margin-top:2px;}
   .ct-acts{display:flex;gap:8px;}
   .ct-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);
@@ -258,6 +258,21 @@
     box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s ease, transform .3s ease;white-space:nowrap;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
+  /* ===== RSVP ===== */
+  .rsvp .lead{font-size:13px;color:var(--ink-soft);line-height:2.1;margin-bottom:22px;}
+  .rsvp-form{text-align:left;}
+  .rsvp-input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.6);
+    background:rgba(255,255,255,.6);font-family:'NanumSquareNeo',sans-serif;font-size:14px;color:var(--ink);margin-bottom:10px;}
+  .rsvp-input::placeholder{color:var(--ink-soft);opacity:.7;}
+  .rsvp-radio{display:flex;gap:10px;margin-bottom:10px;}
+  .rsvp-radio label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 0;
+    border-radius:12px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.4);
+    font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;}
+  .rsvp-radio input{accent-color:var(--ink);}
+  .rsvp-btn{width:100%;padding:14px 0;border-radius:12px;border:none;background:var(--ink);color:#fff;
+    font-family:'NanumSquareNeo',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;margin-top:4px;}
+  .rsvp-btn:active{opacity:.85;}
+
   /* ===== ACCOUNT (dark glass) ===== */
   .account .lead{font-size:13px;opacity:.8;line-height:2.1;margin-bottom:24px;}
   .acc-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:6px;}
@@ -269,7 +284,7 @@
   .acc-panel.active{display:block;}
   .acc-item{display:flex;justify-content:space-between;align-items:center;text-align:left;padding:16px 2px;}
   .acc-item+.acc-item{border-top:1px solid rgba(255,255,255,.18);}
-  .acc-role{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;opacity:.6;}
+  .acc-role{font-family:'NanumSquareNeo',sans-serif;font-style:normal;font-size:12px;opacity:.6;}
   .acc-num{font-size:13px;margin-top:4px;letter-spacing:.5px;}
   .acc-name{font-size:11px;opacity:.7;margin-top:2px;}
   .copy-btn{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#eef2f8;
@@ -280,6 +295,10 @@
   /* ===== OUTRO ===== */
   .outro .mono{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;letter-spacing:4px;}
   .outro .mono .amp{font-style:italic;opacity:.6;margin:0 4px;}
+  .share-btn{margin-top:22px;padding:13px 26px;border-radius:30px;border:1px solid rgba(255,255,255,.6);
+    background:rgba(255,255,255,.5);color:var(--ink);font-family:'NanumSquareNeo',sans-serif;font-size:13px;
+    font-weight:700;letter-spacing:.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
+  .share-btn:active{background:rgba(255,255,255,.75);}
   .outro .thanks{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;letter-spacing:3px;margin-top:14px;color:var(--ink-soft);}
   .outro .kr{font-size:13px;color:var(--ink-soft);margin-top:14px;line-height:2;}
 
@@ -511,10 +530,24 @@
     </div>
   </section>
 
+  <!-- ============ RSVP ============ -->
+  <section class="glass rsvp reveal">
+    <p class="lead">참석 여부를 미리 알려주시면<br/>준비하는 데 큰 도움이 됩니다.</p>
+    <div class="rsvp-form">
+      <input type="text" id="rsvpName" class="rsvp-input" placeholder="성함을 입력해주세요"/>
+      <div class="rsvp-radio">
+        <label><input type="radio" name="rsvpAttend" value="참석" checked/> 참석</label>
+        <label><input type="radio" name="rsvpAttend" value="불참"/> 불참</label>
+      </div>
+      <input type="number" id="rsvpCount" class="rsvp-input" placeholder="참석 인원 수" min="1" value="1"/>
+      <button class="rsvp-btn" id="rsvpSubmit">회신 보내기</button>
+    </div>
+  </section>
+
   <!-- ============ CONTACT ============ -->
   <section class="glass contact reveal">
     <div class="ct-row">
-      <div class="ct-who"><div class="ct-role">Groom</div><div class="ct-name">변영준</div></div>
+      <div class="ct-who"><div class="ct-role">신랑</div><div class="ct-name">변영준</div></div>
       <div class="ct-acts">
         <a class="ct-btn" href="tel:010-8077-0107">✆</a>
         <a class="ct-btn" href="sms:010-8077-0107">✉</a>
@@ -524,7 +557,7 @@
       </div>
     </div>
     <div class="ct-row">
-      <div class="ct-who"><div class="ct-role">Bride</div><div class="ct-name">김민선</div></div>
+      <div class="ct-who"><div class="ct-role">신부</div><div class="ct-name">김민선</div></div>
       <div class="ct-acts">
         <a class="ct-btn" href="tel:010-8776-2382">✆</a>
         <a class="ct-btn" href="sms:010-8776-2382">✉</a>
@@ -544,21 +577,21 @@
     </div>
     <div class="acc-panel active" data-panel="groom">
       <div class="acc-item">
-        <div class="acc-info"><div class="acc-role">Groom</div><div class="acc-num">기업은행 202-063650-01-011</div><div class="acc-name">예금주 변영준</div></div>
+        <div class="acc-info"><div class="acc-role">신랑</div><div class="acc-num">기업은행 202-063650-01-011</div><div class="acc-name">예금주 변영준</div></div>
         <button class="copy-btn" data-acc="기업은행 202-063650-01-011">Copy</button>
       </div>
       <div class="acc-item">
-        <div class="acc-info"><div class="acc-role">Groom's Mother</div><div class="acc-num">우리은행 1002-714-485257</div><div class="acc-name">예금주 이혜정</div></div>
+        <div class="acc-info"><div class="acc-role">신랑 어머니</div><div class="acc-num">우리은행 1002-714-485257</div><div class="acc-name">예금주 이혜정</div></div>
         <button class="copy-btn" data-acc="우리은행 1002-714-485257">Copy</button>
       </div>
     </div>
     <div class="acc-panel" data-panel="bride">
       <div class="acc-item">
-        <div class="acc-info"><div class="acc-role">Bride</div><div class="acc-num">토스뱅크 1001-0690-2579</div><div class="acc-name">예금주 김민선</div></div>
+        <div class="acc-info"><div class="acc-role">신부</div><div class="acc-num">토스뱅크 1001-0690-2579</div><div class="acc-name">예금주 김민선</div></div>
         <button class="copy-btn" data-acc="토스뱅크 1001-0690-2579">Copy</button>
       </div>
       <div class="acc-item">
-        <div class="acc-info"><div class="acc-role">Bride's Father</div><div class="acc-num">우리은행 1002-940-456464</div><div class="acc-name">예금주 김영환</div></div>
+        <div class="acc-info"><div class="acc-role">신부 아버지</div><div class="acc-num">우리은행 1002-940-456464</div><div class="acc-name">예금주 김영환</div></div>
         <button class="copy-btn" data-acc="우리은행 1002-940-456464">Copy</button>
       </div>
     </div>
@@ -568,6 +601,7 @@
   <section class="glass outro reveal">
     <div class="thanks">Thank you</div>
     <p class="kr">소중한 분들을 모시고<br/>새로운 시작을 함께하고 싶습니다.</p>
+    <button class="share-btn" id="shareBtn">🔗 청첩장 공유하기</button>
   </section>
 
   <div class="foot">변영준 &amp; 김민선 — 2026 . 08 . 23</div>
@@ -611,6 +645,33 @@
     var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
     clearTimeout(_tt); _tt=setTimeout(function(){ t.classList.remove('show'); }, 1800);
   }
+
+  /* RSVP: 참석 여부를 문자로 전송 */
+  (function(){
+    var btn=document.getElementById('rsvpSubmit');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var name=document.getElementById('rsvpName').value.trim();
+      var attend=document.querySelector('input[name="rsvpAttend"]:checked').value;
+      var count=document.getElementById('rsvpCount').value || '1';
+      if(!name){ toast('성함을 입력해주세요'); return; }
+      var msg='[결혼식 참석 회신] '+name+' - '+attend+(attend==='참석' ? ' ('+count+'명)' : '');
+      var isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+      var sep=isIOS ? '&' : '?';
+      location.href='sms:010-8776-2382'+sep+'body='+encodeURIComponent(msg);
+    });
+  })();
+
+  /* 공유하기 */
+  (function(){
+    var btn=document.getElementById('shareBtn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var data={ title:'변영준 ♥ 김민선 결혼합니다', text:'2026.08.23 SUN 오후 3시, 더화이트베일에서 저희 두 사람의 시작을 축하해주세요.', url:location.href };
+      if(navigator.share){ navigator.share(data).catch(function(){}); }
+      else{ navigator.clipboard.writeText(location.href).then(function(){ toast('링크가 복사되었어요'); }); }
+    });
+  })();
 
   /* 신랑측/신부측 계좌 탭 */
   document.querySelectorAll('.acc-tab').forEach(function(tab){
