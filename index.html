@@ -343,13 +343,7 @@
   .map-btn{font-size:13px;}
 </style>
 <script>
-  /* 첫 페인트 전에 랜덤 테마 결정 → 라이트가 반짝 보이는 현상 방지 (다크/레드 랜덤 시작 대응) */
-  (function(){
-    var O=['light','dark','red'];
-    var m=O[Math.floor(Math.random()*O.length)];
-    window.__startMode=m;
-    document.documentElement.className = (m==='light' ? '' : m);
-  })();
+  window.__startMode='light';
 </script>
 </head>
 <body>
@@ -396,14 +390,6 @@
   <header class="cover">
     <div class="photo-frame">
       <img src="images/main1.jpg" alt="변영준 김민선 메인 사진" />
-      <script>
-        /* 다크/레드로 랜덤 시작 시, 커버 이미지를 첫 페인트 전에 교체 (라이트 사진 노출 방지) */
-        (function(){
-          var IMG={light:'images/main1.jpg', dark:'images/main_dark.jpg', red:'images/gallery/g1.jpg'};
-          var m=window.__startMode, el=document.currentScript.previousElementSibling;
-          if(el && el.tagName==='IMG' && IMG[m] && m!=='light'){ el.src=IMG[m]; }
-        })();
-      </script>
       <div class="nameplate">
         <div class="en cor">Youngjun<span class="amp">&hearts;</span>Minseon</div>
         <div class="dt">2026 . 08 . 23 &nbsp;SUNDAY &nbsp;PM 3:00</div>
