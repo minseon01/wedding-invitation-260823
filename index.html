@@ -171,10 +171,8 @@
   .family .child{font-size:18px;font-weight:700;letter-spacing:3px;color:var(--ink);}
 
   /* ===== DATE ===== */
-  .datesec .big{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;line-height:1.1;}
-  .datesec .yr{display:block;font-family:'NanumSquareNeo',sans-serif;font-style:normal;font-size:15px;letter-spacing:2px;opacity:.7;margin-bottom:8px;}
-  .datesec .dow{font-family:'NanumSquareNeo',sans-serif;font-style:normal;font-size:16px;letter-spacing:2px;margin-top:8px;opacity:.9;}
-  .datesec .time{font-size:13px;letter-spacing:2px;opacity:.7;margin-top:4px;}
+  .datesec .date-line{font-family:'NanumSquareNeo',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;}
+  .datesec .date-line-en{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:2px;opacity:.75;margin-top:8px;}
   .cal{max-width:280px;margin:28px auto 0;}
   .cal table{width:100%;border-collapse:collapse;}
   .cal th{font-family:'Cormorant Garamond',serif;font-size:11px;opacity:.6;font-weight:400;padding:7px 0;}
@@ -182,7 +180,7 @@
   .cal td.sun{color:#f0b6b0;}
   .cal td.mark{position:relative;color:#20283b;font-weight:600;}
   .cal td.mark span{position:relative;z-index:2;}
-  .cal td.mark::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;border-radius:50%;
+  .cal td.mark::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;
     background:rgba(255,255,255,.85);box-shadow:0 2px 10px rgba(255,255,255,.4);z-index:1;}
   .countdown{display:flex;justify-content:center;margin-top:32px;}
   .cd-box{min-width:60px;padding:0 6px;position:relative;}
@@ -193,12 +191,20 @@
   .cd-msg b{font-weight:400;}
 
   /* ===== GALLERY ===== */
+  .grid-hint{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--ink-soft);
+    margin-bottom:12px;opacity:1;transition:opacity .4s ease;}
+  .grid-hint.hide{opacity:0;}
+  .grid-hint .hint-arrow{display:inline-block;animation:arrowNudge 1.2s ease-in-out infinite;}
+  @keyframes arrowNudge{0%,100%{transform:translateX(0);opacity:.6;}50%{transform:translateX(6px);opacity:1;}}
   .grid{display:flex;gap:10px;margin-top:4px;overflow-x:auto;scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 24px 10px 2px;}
   .grid::-webkit-scrollbar{display:none;}
   .grid img.ph{flex:0 0 70%;min-width:0;width:70%;scroll-snap-align:start;aspect-ratio:3/4;object-fit:cover;border-radius:12px;display:block;cursor:pointer;
     border:1px solid rgba(255,255,255,.5);box-shadow:0 4px 14px rgba(20,30,55,.12);transition:transform .25s ease;}
   .grid img.ph:active{transform:scale(.98);}
+  .grid-dots{display:flex;justify-content:center;gap:6px;margin-top:14px;}
+  .grid-dots span{width:6px;height:6px;border-radius:50%;background:rgba(32,40,59,.22);transition:background .25s ease, transform .25s ease;}
+  .grid-dots span.on{background:var(--ink);transform:scale(1.3);}
   /* 라이트박스 */
   .lightbox{position:fixed;inset:0;z-index:130;background:rgba(12,16,28,.92);
     opacity:0;pointer-events:none;transition:opacity .3s ease;padding:20px;overflow:hidden;}
@@ -248,7 +254,7 @@
   .ct-name{font-size:15px;font-weight:700;letter-spacing:2px;margin-top:2px;}
   .ct-acts{display:flex;gap:8px;}
   .ct-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);
-    display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
+    display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:20px;color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
   .ct-btn:active{background:rgba(255,255,255,.55);}
   .ct-btn.kakao{background:rgba(254,229,0,.85);border-color:rgba(254,229,0,.9);color:#3a1d1d;font-size:13px;font-weight:700;}
   .ct-btn.kakao:active{background:#fee500;}
@@ -324,17 +330,10 @@
 
   /* ===== 폰트 전체 키우기 ===== */
   .greeting .poem{font-size:17px;line-height:2.6;}
-  .family .child{font-size:21px;}
-  .family .parents{font-size:14px;}
-  .family .rel{font-size:14px;}
-  .datesec .time{font-size:15px;font-weight:800;}
-  .datesec .dow{font-size:18px;font-weight:700;}
   /* Save the Date 굵게 */
-  .datesec .label{font-weight:700;}
-  .datesec .big{font-weight:700;}
-  .datesec .yr{font-weight:700;font-style:normal;}
+  .datesec .date-line{font-weight:800;}
   .datesec .cal th{font-weight:700;font-size:13px;color:#cdd1c4;}
-  .datesec .cal td{font-weight:700;font-size:16px;color:#f4f2ec;opacity:1;}
+  .datesec .cal td{font-weight:700;font-size:19px;color:#f4f2ec;opacity:1;}
   .datesec .cal td.sun{color:#f3b3ad;}
   .datesec .cal td.mark{font-weight:800;color:#1f2740;}
   .datesec .cd-num{font-weight:700;}
@@ -437,9 +436,8 @@
 
   <!-- ============ DATE ============ -->
   <section class="glass dark datesec reveal">
-    <div class="big"><span class="yr">2026년 8월</span>23</div>
-    <div class="dow">일요일</div>
-    <div class="time">오후 3시</div>
+    <div class="date-line">2026년 8월 23일 일요일 오후 3시</div>
+    <div class="date-line-en">Sunday, August 23, 2026 · 3:00 PM</div>
 
     <div class="cal">
       <table>
@@ -465,7 +463,8 @@
 
   <!-- ============ GALLERY ============ -->
   <section class="glass gallery reveal">
-    <div class="grid">
+    <div class="grid-hint" id="gridHint">옆으로 넘겨보세요 <span class="hint-arrow">→</span></div>
+    <div class="grid" id="galleryGrid">
       <img class="ph" src="images/gallery/g1.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g2.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g3.jpg" loading="lazy" alt="갤러리"/>
@@ -479,6 +478,7 @@
       <img class="ph" src="images/gallery/g13.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g14.jpg" loading="lazy" alt="갤러리"/>
     </div>
+    <div class="grid-dots" id="gridDots"></div>
   </section>
 
   <!-- ============ LOCATION ============ -->
@@ -497,16 +497,16 @@
     </div>
     <div class="transit">
       <div class="transit-item">
-        <div class="transit-h"><span class="t-ico">🚗</span> 자차</div>
-        <div class="transit-b">내비게이션 '더화이트베일' 또는 '서초중앙로 14' 검색<br/>서울특별시 서초구 서초중앙로 14</div>
+        <div class="transit-h"><span class="t-ico">🚗</span> 자차 이용시</div>
+        <div class="transit-b">내비게이션 '더화이트베일주차장' 검색<br/>또는 '서초중앙로2길 10'</div>
       </div>
       <div class="transit-item">
-        <div class="transit-h"><span class="t-ico">🚇</span> 지하철</div>
-        <div class="transit-b">3호선 남부터미널역 4번 출구 도보 2분 거리</div>
+        <div class="transit-h"><span class="t-ico">🚇</span> 지하철 이용시</div>
+        <div class="transit-b">3호선 남부터미널역 4-1번출구 도보 30초거리</div>
       </div>
       <div class="transit-item">
-        <div class="transit-h"><span class="t-ico">🚌</span> 버스</div>
-        <div class="transit-b">남부터미널 정류장 하차 · 고속/시외버스 이용 시에도 접근이 편리해요</div>
+        <div class="transit-h"><span class="t-ico">🚌</span> 버스 이용시</div>
+        <div class="transit-b">고속버스 남부터미널 하차 후 도보 5분<br/>시내버스 국제전자센터 하차 후 도보 4분</div>
       </div>
       <div class="transit-item">
         <div class="transit-h"><span class="t-ico">🅿️</span> 주차</div>
@@ -552,7 +552,7 @@
         <button class="copy-btn" data-acc="기업은행 202-063650-01-011">Copy</button>
       </div>
       <div class="acc-item">
-        <div class="acc-info"><div class="acc-role">어머니</div><div class="acc-num">우리은행 1002-714-485257</div><div class="acc-name">예금주 이혜정</div></div>
+        <div class="acc-info"><div class="acc-role">신랑측 부모님</div><div class="acc-num">우리은행 1002-714-485257</div><div class="acc-name">예금주 이혜정</div></div>
         <button class="copy-btn" data-acc="우리은행 1002-714-485257">Copy</button>
       </div>
     </div>
@@ -562,7 +562,7 @@
         <button class="copy-btn" data-acc="토스뱅크 1001-0690-2579">Copy</button>
       </div>
       <div class="acc-item">
-        <div class="acc-info"><div class="acc-role">아버지</div><div class="acc-num">우리은행 1002-940-456464</div><div class="acc-name">예금주 김영환</div></div>
+        <div class="acc-info"><div class="acc-role">신부측 부모님</div><div class="acc-num">우리은행 1002-940-456464</div><div class="acc-name">예금주 김영환</div></div>
         <button class="copy-btn" data-acc="우리은행 1002-940-456464">Copy</button>
       </div>
     </div>
@@ -647,6 +647,42 @@
     });
   });
 
+
+  /* 갤러리 가로 스크롤 안내 (점 네비게이션 + 힌트 + 첫 노출 시 살짝 넛지) */
+  (function(){
+    var grid=document.getElementById('galleryGrid'), hint=document.getElementById('gridHint'), dotsWrap=document.getElementById('gridDots');
+    if(!grid) return;
+    var imgs=grid.querySelectorAll('img.ph'), count=imgs.length;
+    dotsWrap.innerHTML=Array.from({length:count}).map(function(){return '<span></span>';}).join('');
+    var dots=dotsWrap.children;
+    function step(){ return imgs[0].getBoundingClientRect().width + 10; }
+    function paint(){
+      var idx=Math.round(grid.scrollLeft / step());
+      idx=Math.max(0, Math.min(count-1, idx));
+      for(var i=0;i<dots.length;i++){ dots[i].classList.toggle('on', i===idx); }
+    }
+    paint();
+    var ticking=false;
+    grid.addEventListener('scroll', function(){
+      hint.classList.add('hide');
+      if(!ticking){ ticking=true; requestAnimationFrame(function(){ paint(); ticking=false; }); }
+    }, {passive:true});
+
+    /* 갤러리가 처음 화면에 보일 때 살짝 좌우로 흔들어 스크롤 가능함을 암시 */
+    var nudged=false;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting && !nudged){
+          nudged=true;
+          setTimeout(function(){
+            grid.scrollTo({left:36, behavior:'smooth'});
+            setTimeout(function(){ grid.scrollTo({left:0, behavior:'smooth'}); }, 500);
+          }, 700);
+        }
+      });
+    }, {threshold:.4});
+    io.observe(grid);
+  })();
 
   /* 갤러리 라이트박스 (스와이프 슬라이드) */
   (function(){
