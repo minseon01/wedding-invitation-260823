@@ -231,6 +231,11 @@
     color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.5);}
   .map-btn:active{background:rgba(255,255,255,.5);}
+  .transit{margin-top:22px;text-align:left;}
+  .transit-item{padding:14px 2px;}
+  .transit-item+.transit-item{border-top:1px solid rgba(255,255,255,.4);}
+  .transit-h{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+  .transit-b{font-size:12px;color:var(--ink-soft);margin-top:5px;line-height:1.7;}
 
   /* ===== CONTACT ===== */
   .ct-row{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;}
@@ -252,6 +257,13 @@
 
   /* ===== ACCOUNT (dark glass) ===== */
   .account .lead{font-size:13px;opacity:.8;line-height:2.1;margin-bottom:24px;}
+  .acc-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:6px;}
+  .acc-tab{flex:1;padding:12px 0;background:none;border:none;color:rgba(255,255,255,.55);
+    font-family:'NanumSquareNeo',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;position:relative;}
+  .acc-tab.active{color:#fff;}
+  .acc-tab.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#fff;}
+  .acc-panel{display:none;}
+  .acc-panel.active{display:block;}
   .acc-item{display:flex;justify-content:space-between;align-items:center;text-align:left;padding:16px 2px;}
   .acc-item+.acc-item{border-top:1px solid rgba(255,255,255,.18);}
   .acc-role{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;opacity:.6;}
@@ -416,22 +428,9 @@
     </p>
   </section>
 
-  <!-- ============ FAMILY ============ -->
-  <section class="glass family reveal">
-    <div class="head"><span class="ix">i.</span><span class="label">Our Family</span></div>
-    <div class="prow">
-      <div class="parents">변효석 &middot; 이혜정 <span class="rel">의 아들</span></div>
-      <div class="child">변영준</div>
-    </div>
-    <div class="prow">
-      <div class="parents">김영환 &middot; 강효순 <span class="rel">의 딸</span></div>
-      <div class="child">김민선</div>
-    </div>
-  </section>
-
   <!-- ============ DATE ============ -->
   <section class="glass dark datesec reveal">
-    <div class="head"><span class="ix">ii.</span><span class="label">Save the Date</span></div>
+    <div class="head"><span class="ix">i.</span><span class="label">Save the Date</span></div>
     <div class="big"><span class="yr">2026 . AUGUST</span>23</div>
     <div class="dow">Sunday</div>
     <div class="time">오후 3시</div>
@@ -460,7 +459,7 @@
 
   <!-- ============ GALLERY ============ -->
   <section class="glass gallery reveal">
-    <div class="head"><span class="ix">iii.</span><span class="label">Gallery</span></div>
+    <div class="head"><span class="ix">ii.</span><span class="label">Gallery</span></div>
     <div class="grid">
       <img class="ph" src="images/gallery/g1.jpg" loading="lazy" alt="갤러리"/>
       <img class="ph" src="images/gallery/g2.jpg" loading="lazy" alt="갤러리"/>
@@ -479,7 +478,7 @@
 
   <!-- ============ LOCATION ============ -->
   <section class="glass location reveal">
-    <div class="head"><span class="ix">iv.</span><span class="label">Location</span></div>
+    <div class="head"><span class="ix">iii.</span><span class="label">Location</span></div>
     <div class="hall">더화이트베일</div>
     <div class="floor">V홀 · 3층</div>
     <div class="addr">서울특별시 서초구 서초중앙로 14</div>
@@ -491,11 +490,29 @@
       <a class="map-btn" href="https://map.kakao.com/?q=더화이트베일 서초중앙로 14" target="_blank" rel="noopener">Kakao</a>
       <a class="map-btn" href="https://map.naver.com/p/directions/-/-/-/transit?c=14,0,0,0,dh&searchText=더화이트베일" target="_blank" rel="noopener">길찾기</a>
     </div>
+    <div class="transit">
+      <div class="transit-item">
+        <div class="transit-h"><span class="t-ico">🚗</span> 자차</div>
+        <div class="transit-b">내비게이션 '더화이트베일' 또는 '서초중앙로 14' 검색</div>
+      </div>
+      <div class="transit-item">
+        <div class="transit-h"><span class="t-ico">🚇</span> 지하철</div>
+        <div class="transit-b">3호선 남부터미널역 4번 출구 도보 2분 거리</div>
+      </div>
+      <div class="transit-item">
+        <div class="transit-h"><span class="t-ico">🚌</span> 버스</div>
+        <div class="transit-b">남부터미널 정류장 하차 · 고속/시외버스 이용 시에도 접근이 편리해요</div>
+      </div>
+      <div class="transit-item">
+        <div class="transit-h"><span class="t-ico">🅿️</span> 주차</div>
+        <div class="transit-b">맞은편 전용 주차타워 이용 (2시간 무료주차)</div>
+      </div>
+    </div>
   </section>
 
   <!-- ============ CONTACT ============ -->
   <section class="glass contact reveal">
-    <div class="head"><span class="ix">v.</span><span class="label">Contact</span></div>
+    <div class="head"><span class="ix">iv.</span><span class="label">Contact</span></div>
     <div class="ct-row">
       <div class="ct-who"><div class="ct-role">Groom</div><div class="ct-name">변영준</div></div>
       <div class="ct-acts">
@@ -520,15 +537,31 @@
 
   <!-- ============ ACCOUNT ============ -->
   <section class="glass dark account reveal">
-    <div class="head"><span class="ix">vi.</span><span class="label">With Heart</span></div>
+    <div class="head"><span class="ix">v.</span><span class="label">With Heart</span></div>
     <p class="lead">참석이 어려우신 분들을 위해<br/>마음 전하실 곳을 안내드립니다.</p>
-    <div class="acc-item">
-      <div class="acc-info"><div class="acc-role">Bride</div><div class="acc-num">토스뱅크 1001-0690-2579</div><div class="acc-name">예금주 김민선</div></div>
-      <button class="copy-btn" data-acc="토스뱅크 1001-0690-2579">Copy</button>
+    <div class="acc-tabs">
+      <button class="acc-tab active" data-tab="groom">신랑측</button>
+      <button class="acc-tab" data-tab="bride">신부측</button>
     </div>
-    <div class="acc-item">
-      <div class="acc-info"><div class="acc-role">Groom</div><div class="acc-num">기업은행 202-063650-01-011</div><div class="acc-name">예금주 변영준</div></div>
-      <button class="copy-btn" data-acc="기업은행 202-063650-01-011">Copy</button>
+    <div class="acc-panel active" data-panel="groom">
+      <div class="acc-item">
+        <div class="acc-info"><div class="acc-role">Groom</div><div class="acc-num">기업은행 202-063650-01-011</div><div class="acc-name">예금주 변영준</div></div>
+        <button class="copy-btn" data-acc="기업은행 202-063650-01-011">Copy</button>
+      </div>
+      <div class="acc-item">
+        <div class="acc-info"><div class="acc-role">Groom's Mother</div><div class="acc-num">우리은행 1002-714-485257</div><div class="acc-name">예금주 이혜정</div></div>
+        <button class="copy-btn" data-acc="우리은행 1002-714-485257">Copy</button>
+      </div>
+    </div>
+    <div class="acc-panel" data-panel="bride">
+      <div class="acc-item">
+        <div class="acc-info"><div class="acc-role">Bride</div><div class="acc-num">토스뱅크 1001-0690-2579</div><div class="acc-name">예금주 김민선</div></div>
+        <button class="copy-btn" data-acc="토스뱅크 1001-0690-2579">Copy</button>
+      </div>
+      <div class="acc-item">
+        <div class="acc-info"><div class="acc-role">Bride's Father</div><div class="acc-num">우리은행 1002-940-456464</div><div class="acc-name">예금주 김영환</div></div>
+        <button class="copy-btn" data-acc="우리은행 1002-940-456464">Copy</button>
+      </div>
     </div>
   </section>
 
@@ -579,6 +612,15 @@
     var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
     clearTimeout(_tt); _tt=setTimeout(function(){ t.classList.remove('show'); }, 1800);
   }
+
+  /* 신랑측/신부측 계좌 탭 */
+  document.querySelectorAll('.acc-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var target=tab.getAttribute('data-tab');
+      document.querySelectorAll('.acc-tab').forEach(function(t){ t.classList.toggle('active', t===tab); });
+      document.querySelectorAll('.acc-panel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel')===target); });
+    });
+  });
 
   /* 계좌 복사 */
   document.querySelectorAll('.copy-btn').forEach(function(b){
