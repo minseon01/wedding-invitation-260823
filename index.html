@@ -135,7 +135,7 @@
   html.red .em{color:#d62c42;}
   html.red .hairline{background:#d62c42;opacity:.55;}
   html.red .cover-kr .kn .amp{color:#e0324a;}
-  html.red .scrolldown, html.red .quote{color:#d62c42;}
+  html.red .quote{color:#d62c42;}
 
 
   .ix{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:4px;opacity:.7;}
@@ -223,8 +223,8 @@
     border:1px solid rgba(255,255,255,.5);box-shadow:0 4px 14px rgba(20,30,55,.12);transition:transform .25s ease;}
   .grid img.ph:active{transform:scale(.98);}
   .grid-dots{display:flex;justify-content:center;gap:6px;margin-top:14px;}
-  .grid-dots span{width:6px;height:6px;border-radius:50%;background:rgba(32,40,59,.22);transition:background .25s ease, transform .25s ease;}
-  .grid-dots span.on{background:var(--ink);transform:scale(1.3);}
+  .grid-dots span{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.25;transition:opacity .25s ease, transform .25s ease;}
+  .grid-dots span.on{opacity:1;transform:scale(1.3);}
   /* 라이트박스 */
   .lightbox{position:fixed;inset:0;z-index:130;background:rgba(12,16,28,.92);
     opacity:0;pointer-events:none;transition:opacity .3s ease;padding:20px;overflow:hidden;}
@@ -276,20 +276,29 @@
   .transit-b{font-size:12.5px;color:var(--ink-soft);margin-top:5px;line-height:1.7;font-family:var(--gothic);}
 
   /* ===== CONTACT ===== */
-  .ct-head{text-align:center;margin-bottom:22px;}
+  .ct-head{text-align:center;margin-bottom:20px;}
   .ct-title{font-size:18px;font-weight:700;letter-spacing:1px;color:var(--ink);}
   .ct-sub{font-size:12.5px;color:var(--ink-soft);opacity:.9;margin-top:8px;letter-spacing:.3px;}
-  .ct-row{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;}
-  .ct-row+.ct-row{border-top:1px solid rgba(255,255,255,.4);}
-  .ct-who{text-align:left;}
-  .ct-role{font-family:var(--kfont);font-style:normal;font-size:12px;opacity:.65;}
-  .ct-name{font-size:15px;font-weight:700;letter-spacing:2px;margin-top:2px;}
-  .ct-acts{display:flex;gap:8px;}
-  .ct-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);
-    display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:20px;color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
-  .ct-btn:active{background:rgba(255,255,255,.55);}
-  .ct-btn.kakao{background:rgba(254,229,0,.85);border-color:rgba(254,229,0,.9);color:#3a1d1d;font-size:13px;font-weight:700;}
-  .ct-btn.kakao:active{background:#fee500;}
+  .ct-tabs{display:flex;border-bottom:1px solid rgba(120,130,150,.28);margin-bottom:6px;}
+  .ct-tab{flex:1;padding:12px 0;background:none;border:none;color:var(--ink-soft);opacity:.65;
+    font-family:var(--gothic);font-size:14px;font-weight:800;letter-spacing:.5px;cursor:pointer;position:relative;}
+  .ct-tab.active{color:var(--ink);opacity:1;}
+  .ct-tab.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink);}
+  .ct-panel{display:none;}
+  .ct-panel.active{display:block;}
+  .ct-person{padding:16px 2px;text-align:left;}
+  .ct-person+.ct-person{border-top:1px solid rgba(120,130,150,.18);}
+  .ct-role{font-family:var(--gothic);font-size:12px;color:var(--ink-soft);}
+  .ct-name{font-size:17px;font-weight:700;letter-spacing:1px;margin-top:1px;margin-bottom:11px;}
+  .ct-pbtns{display:flex;gap:8px;}
+  .ct-pbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border-radius:11px;
+    font-family:var(--gothic);font-size:13px;font-weight:800;letter-spacing:.3px;text-decoration:none;
+    transition:transform .15s ease, filter .15s ease;}
+  .ct-pbtn:active{transform:translateY(1px);filter:brightness(.95);}
+  .ct-pbtn .pb-ico{font-size:13px;line-height:1;}
+  .ct-pbtn.call{background:#2f3e63;color:#fff;}
+  .ct-pbtn.sms{background:transparent;color:var(--ink);border:1px solid rgba(120,130,150,.42);}
+  .ct-pending{flex:1;text-align:center;font-family:var(--gothic);font-size:12.5px;color:var(--ink-soft);opacity:.7;padding:11px 0;}
   /* 토스트 */
   .toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);z-index:120;
     background:rgba(20,26,42,.92);color:#fff;font-size:13px;letter-spacing:.5px;padding:12px 20px;border-radius:30px;
@@ -404,7 +413,6 @@
 <script>
   window.__startMode='light';
 </script>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <!-- 고정 배경 (그라데이션) -->
@@ -466,7 +474,7 @@
   <!-- ============ GREETING ============ -->
   <section class="glass greeting reveal">
     <p class="poem">
-      <span class="ln em">직장 동료로 만나</span>
+      <span class="ln">직장 동료로 만나</span>
       <span class="ln">어느새 사업 파트너이자</span>
       <span class="ln">인생의 파트너가 되었습니다.</span>
       <span class="ln stanza">서로 다른 두 사람이</span>
@@ -569,24 +577,51 @@
       <div class="ct-title">축하 인사 전하기</div>
       <div class="ct-sub">따뜻한 마음을 담아 축하를 전해주세요</div>
     </div>
-    <div class="ct-row">
-      <div class="ct-who"><div class="ct-role">신랑</div><div class="ct-name">변영준</div></div>
-      <div class="ct-acts">
-        <a class="ct-btn" href="tel:010-8077-0107">✆</a>
-        <a class="ct-btn" href="sms:010-8077-0107">✉</a>
-        <a class="ct-btn kakao" href="https://open.kakao.com/me/eudiny2014" target="_blank" rel="noopener" aria-label="카카오톡">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3C1E1E" d="M12 4.2C6.9 4.2 3 7.4 3 11.3c0 2.5 1.7 4.7 4.2 6-.18.63-.66 2.3-.76 2.66-.12.45.16.44.34.32.14-.1 2.2-1.49 3.1-2.1.69.1 1.4.15 2.12.15 5.1 0 9-3.2 9-7.18S17.1 4.2 12 4.2z"/></svg>
-        </a>
+    <div class="ct-tabs">
+      <button class="ct-tab active" data-tab="groom">신랑측</button>
+      <button class="ct-tab" data-tab="bride">신부측</button>
+    </div>
+    <div class="ct-panel active" data-panel="groom">
+      <div class="ct-person">
+        <div class="ct-role">신랑</div><div class="ct-name">변영준</div>
+        <div class="ct-pbtns">
+          <a class="ct-pbtn call" href="tel:010-8077-0107"><span class="pb-ico">📞</span>전화하기</a>
+          <a class="ct-pbtn sms" href="sms:010-8077-0107"><span class="pb-ico">💬</span>문자보내기</a>
+        </div>
+      </div>
+      <div class="ct-person">
+        <div class="ct-role">신랑 아버지</div><div class="ct-name">변효석</div>
+        <div class="ct-pbtns">
+          <a class="ct-pbtn call" href="tel:010-3836-2382"><span class="pb-ico">📞</span>전화하기</a>
+          <a class="ct-pbtn sms" href="sms:010-3836-2382"><span class="pb-ico">💬</span>문자보내기</a>
+        </div>
+      </div>
+      <div class="ct-person">
+        <div class="ct-role">신랑 어머니</div><div class="ct-name">이혜정</div>
+        <div class="ct-pbtns">
+          <a class="ct-pbtn call" href="tel:010-4322-0515"><span class="pb-ico">📞</span>전화하기</a>
+          <a class="ct-pbtn sms" href="sms:010-4322-0515"><span class="pb-ico">💬</span>문자보내기</a>
+        </div>
       </div>
     </div>
-    <div class="ct-row">
-      <div class="ct-who"><div class="ct-role">신부</div><div class="ct-name">김민선</div></div>
-      <div class="ct-acts">
-        <a class="ct-btn" href="tel:010-8776-2382">✆</a>
-        <a class="ct-btn" href="sms:010-8776-2382">✉</a>
-        <a class="ct-btn kakao" href="https://open.kakao.com/me/minseonk01" target="_blank" rel="noopener" aria-label="카카오톡">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3C1E1E" d="M12 4.2C6.9 4.2 3 7.4 3 11.3c0 2.5 1.7 4.7 4.2 6-.18.63-.66 2.3-.76 2.66-.12.45.16.44.34.32.14-.1 2.2-1.49 3.1-2.1.69.1 1.4.15 2.12.15 5.1 0 9-3.2 9-7.18S17.1 4.2 12 4.2z"/></svg>
-        </a>
+    <div class="ct-panel" data-panel="bride">
+      <div class="ct-person">
+        <div class="ct-role">신부</div><div class="ct-name">김민선</div>
+        <div class="ct-pbtns">
+          <a class="ct-pbtn call" href="tel:010-8776-2382"><span class="pb-ico">📞</span>전화하기</a>
+          <a class="ct-pbtn sms" href="sms:010-8776-2382"><span class="pb-ico">💬</span>문자보내기</a>
+        </div>
+      </div>
+      <div class="ct-person">
+        <div class="ct-role">신부 아버지</div><div class="ct-name">김영환</div>
+        <div class="ct-pbtns"><div class="ct-pending">연락처 준비중</div></div>
+      </div>
+      <div class="ct-person">
+        <div class="ct-role">신부 어머니</div><div class="ct-name">강효순</div>
+        <div class="ct-pbtns">
+          <a class="ct-pbtn call" href="tel:010-5370-5280"><span class="pb-ico">📞</span>전화하기</a>
+          <a class="ct-pbtn sms" href="sms:010-5370-5280"><span class="pb-ico">💬</span>문자보내기</a>
+        </div>
       </div>
     </div>
   </section>
@@ -625,12 +660,8 @@
     <div class="thanks">Thank you</div>
     <p class="kr">소중한 분들을 모시고<br/>새로운 시작을 함께하고 싶습니다.</p>
     <div class="share-box">
-      <button class="share-btn2 kko" id="shareKakao">
-        <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><path fill="#3a1d1d" d="M12 3.4C6.9 3.4 2.8 6.6 2.8 10.6c0 2.6 1.7 4.9 4.3 6.2-.19.66-.68 2.36-.78 2.73-.13.46.17.45.35.33.14-.09 2.26-1.53 3.18-2.16.63.09 1.28.14 1.95.14 5.1 0 9.2-3.2 9.2-7.2S17.1 3.4 12 3.4z"/></svg>
-        카카오톡으로 청첩장 전하기
-      </button>
       <button class="share-btn2 copy" id="shareCopy">
-        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M9.5 13.5a3.5 3.5 0 0 0 5 0l2.5-2.5a3.54 3.54 0 0 0-5-5l-1 1M14.5 10.5a3.5 3.5 0 0 0-5 0L7 13a3.54 3.54 0 0 0 5 5l1-1" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M9.5 13.5a3.5 3.5 0 0 0 5 0l2.5-2.5a3.54 3.54 0 0 0-5-5l-1 1M14.5 10.5a3.5 3.5 0 0 0-5 0L7 13a3.54 3.54 0 0 0 5 5l1-1" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
         청첩장 주소 복사하기
       </button>
     </div>
@@ -678,38 +709,9 @@
     clearTimeout(_tt); _tt=setTimeout(function(){ t.classList.remove('show'); }, 1800);
   }
 
-  /* 공유하기: 카카오톡 전하기 + 주소 복사 */
+  /* 청첩장 주소 복사하기 */
   (function(){
-    var KAKAO_JS_KEY='';  /* ← 카카오 developers JavaScript 키 입력 시 리치 공유 활성화 */
     var URL=location.href.split('#')[0];
-    var TITLE='변영준 ♥ 김민선, 결혼합니다';
-    var DESC='2026. 08. 23 SUN 오후 3시 · 더 화이트 베일 3층 V홀\n저희 두 사람의 시작에 함께해 주세요.';
-    var IMG='https://minseon01.github.io/wedding-invitation-260823/images/main1.jpg';
-
-    var kakaoReady=false;
-    try{
-      if(window.Kakao && KAKAO_JS_KEY){
-        if(!Kakao.isInitialized()) Kakao.init(KAKAO_JS_KEY);
-        kakaoReady=Kakao.isInitialized();
-      }
-    }catch(e){}
-
-    var kko=document.getElementById('shareKakao');
-    if(kko) kko.addEventListener('click', function(){
-      if(kakaoReady && Kakao.Share){
-        Kakao.Share.sendDefault({
-          objectType:'feed',
-          content:{ title:TITLE, description:DESC, imageUrl:IMG,
-            link:{ mobileWebUrl:URL, webUrl:URL } },
-          buttons:[{ title:'청첩장 보기', link:{ mobileWebUrl:URL, webUrl:URL } }]
-        });
-      } else if(navigator.share){
-        navigator.share({ title:TITLE, text:DESC, url:URL }).catch(function(){});
-      } else {
-        navigator.clipboard.writeText(URL).then(function(){ toast('링크가 복사되었어요'); });
-      }
-    });
-
     var cp=document.getElementById('shareCopy');
     if(cp) cp.addEventListener('click', function(){
       navigator.clipboard.writeText(URL).then(function(){ toast('청첩장 주소가 복사되었어요'); })
@@ -723,6 +725,15 @@
       var target=tab.getAttribute('data-tab');
       document.querySelectorAll('.acc-tab').forEach(function(t){ t.classList.toggle('active', t===tab); });
       document.querySelectorAll('.acc-panel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel')===target); });
+    });
+  });
+
+  /* 신랑측/신부측 연락처 탭 */
+  document.querySelectorAll('.ct-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var target=tab.getAttribute('data-tab');
+      document.querySelectorAll('.ct-tab').forEach(function(t){ t.classList.toggle('active', t===tab); });
+      document.querySelectorAll('.ct-panel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel')===target); });
     });
   });
 
