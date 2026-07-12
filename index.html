@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
 <title>변영준 ＆ 김민선 — 2026.08.23</title>
 
 <!-- ===== Open Graph (카톡 공유 미리보기) ===== -->
@@ -14,8 +15,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/nanumsquareneo.css" rel="stylesheet" />
+<!-- 한글 폰트: subset 폴백 방지를 위해 완전 단일 파일(fonts-archive)로 로드 -->
+<style>
+@font-face{font-family:'Nanum Myeongjo';font-style:normal;font-weight:400;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumMyeongjo/NanumMyeongjo.woff2') format('woff2');}
+@font-face{font-family:'Nanum Myeongjo';font-style:normal;font-weight:700;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumMyeongjo/NanumMyeongjoBold.woff2') format('woff2');}
+@font-face{font-family:'Nanum Square Neo';font-style:normal;font-weight:400;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSquareNeo/NanumSquareNeo.woff2') format('woff2');}
+@font-face{font-family:'Nanum Square Neo';font-style:normal;font-weight:700;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSquareNeo/NanumSquareNeoB.woff2') format('woff2');}
+@font-face{font-family:'Nanum Square Neo';font-style:normal;font-weight:800;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSquareNeo/NanumSquareNeoEB.woff2') format('woff2');}
+</style>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet" />
 <style>
   :root{
@@ -29,7 +36,7 @@
     --shadow:0 8px 32px rgba(20,30,55,.18);
     --radius:26px;
     --kfont:'Nanum Myeongjo','Apple SD Gothic Neo',serif;
-    --gothic:'NanumSquareNeo','Apple SD Gothic Neo',sans-serif;
+    --gothic:'Nanum Square Neo','Apple SD Gothic Neo',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
@@ -383,7 +390,7 @@
   /* ===== 폰트 전체 키우기 ===== */
   .greeting .poem{font-size:17px;line-height:2.6;}
   /* Save the Date 굵게 */
-  .datesec .date-line{font-weight:800;}
+  .datesec .date-line{font-weight:700;}
   .datesec .cal th{font-weight:700;font-size:13px;color:#cdd1c4;}
   .datesec .cal td{font-weight:700;font-size:19px;color:#f4f2ec;opacity:1;}
   .datesec .cal td.sun{color:#f3b3ad;}
